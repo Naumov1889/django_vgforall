@@ -1,0 +1,15 @@
+asgiref==3.2.3
+DAWG-Python==0.7.2
+Django==2.2.6
+django-tz-detect==0.3.0
+djangorestframework==3.11.0
+docopt==0.6.2
+Pillow==7.0.0
+pymorphy2==0.8
+pymorphy2-dicts==2.4.393442.3710985
+python-decouple==3.3
+pytils==0.3
+pytz==2019.3
+six==1.13.0
+sorl-thumbnail==12.5.0
+sqlparse==0.3.0

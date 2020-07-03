@@ -1,0 +1,170 @@
+{% extends "Home.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="crumbs-container container">
+        <div class="crumbs"><a class="crumbs__link" href="{% url 'home' %}">Главная<i
+                class="icon icon_circle crumbs__icon"></i></a><a class="crumbs__link_current" href="">Личный кабинет</a>
+        </div>
+    </div>
+    <div class="lk">
+        <div class="container">
+            <h1 class="title title_h1 text_left mb-1">Личный кабинет</h1>
+            <div class="lk-nav">
+                <a class="lk-nav__item btn" href="{% url 'all_tests' %}">Мои тесты</a>
+                <a class="lk-nav__item btn btn_1" href="{% url 'personal_info' %}">Мои данные</a>
+            </div>
+            <div class="lk-personal-info-grid">
+                <div class="lk-personal-info-grid__item">
+                    <form class="form" action="{% url 'change_profile_data' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="title title_h2 mb-1">Основные данные</div>
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if 'change_profile_data_messages' in message.tags %}
+                                {{ message|safe }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        <div class="input-container">
+                            <div class="input-container__icon-box"><i class="icon icon_user input-container__icon"></i>
+                            </div>
+                            <input class="input input-container__input" name="name" id="id_name" placeholder="Введите ваше ФИО"
+                                   value="{{ user.first_name }}">
+                        </div>
+                        <div class="input-container">
+                            <div class="input-container__icon-box"><i class="icon icon_user input-container__icon"></i>
+                            </div>
+                            <input class="input input-container__input" required name="username" id="id_username" value="{{ user.username }}" placeholder="Введите ваш логин">
+                        </div>
+                        <div class="input-container">
+                            <div class="input-container__icon-box"><i class="icon icon_email input-container__icon"></i>
+                            </div>
+                            <input class="input input-container__input" required name="email" id="id_email" placeholder="Введите ваш email"
+                                   value="{{ user.email }}">
+                        </div>
+                        <div class="input-container">
+                            <div class="input-container__icon-box"><i
+                                    class="icon icon_calendar input-container__icon"></i></div>
+                            <input minlength="10" name="date_of_birth" class="input input-container__input js-date-mask" id="id_date_of_birth" placeholder="Введите дату рождения" {% if profile.date_of_birth %}value="{{ profile.date_of_birth }}"{% endif %} type="text">
+                        </div>
+                        <div class="input-container">
+                            <div class="input-container__icon-box"><i
+                                    class="icon icon_female input-container__icon"></i></div>
+                            <select name="sex" id="id_sex">
+                                {% if not profile.sex %}
+                                <option value="Выберите ваш пол" data-placeholder>Выберите ваш пол</option>
+                                <option value="Мужской">Мужской</option>
+                                <option value="Женский">Женский</option>
+                                {% elif profile.sex == "Мужской" %}
+                                <option value="Мужской">Мужской</option>
+                                <option value="Женский">Женский</option>
+                                {% else %}
+                                <option value="Женский">Женский</option>
+                                <option value="Мужской">Мужской</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="input-container">
+                            <div class="input-container__icon-box"><i
+                                    class="icon icon_internet input-container__icon"></i></div>
+                            <input class="input input-container__input" name="country_of_residence" id="id_country_of_residence" placeholder="Введите вашу страну" {% if profile.country_of_residence %}value="{{ profile.country_of_residence }}"{% endif %}>
+                        </div>
+                        <div class="input-container">
+                            <div class="input-container__icon-box"><i
+                                    class="icon icon_placemark input-container__icon"></i></div>
+                            <input class="input input-container__input" name="city_of_residence" id="id_city_of_residence" placeholder="Введите ваш город" {% if profile.city_of_residence %}value="{{ profile.city_of_residence }}"{% endif %}>
+                        </div>
+                        <button class="btn btn_1">Сохранить изменения</button>
+                    </form>
+                </div>
+                <div class="lk-personal-info-grid__item">
+                    <form class="form" action="{% url 'change_password' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="title title_h2 mb-1">Изменить пароль</div>
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if 'change_password_messages' in message.tags %}
+                                {{ message|safe }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if form.errors %}
+                        <ul>
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <div class="input-container">
+                            <div class="input-container__icon-box hover-display-none"><i class="icon icon_lock input-container__icon"></i></div>
+                            <div class="input-container__icon-box hover-cursor-pointer js-password-visibility"><i class="icon icon_eye_1 input-container__icon"></i></div>
+                            <input class="input input-container__input" type="password" required name="old_password"
+                                   placeholder="Ваш текущий пароль">
+                        </div>
+                        <div class="input-container">
+                            <div class="input-container__icon-box hover-display-none"><i class="icon icon_lock input-container__icon"></i></div>
+                            <div class="input-container__icon-box hover-cursor-pointer js-password-visibility"><i class="icon icon_eye_1 input-container__icon"></i></div>
+                            <input class="input input-container__input" type="password" required name="new_password1"
+                                   placeholder="Новый пароль">
+                        </div>
+                        <div class="input-container">
+                            <div class="input-container__icon-box hover-display-none"><i class="icon icon_lock input-container__icon"></i></div>
+                            <div class="input-container__icon-box hover-cursor-pointer js-password-visibility"><i class="icon icon_eye_1 input-container__icon"></i></div>
+                            <input class="input input-container__input" type="password" required
+                                   name="new_password2" placeholder="Подтвердите пароль">
+                        </div>
+                        <button class="btn btn_1">Изменить пароль</button>
+                    </form>
+                    <div class="lk-personal-info__bg"
+                         style="background-image: url({% static 'img/bg-lk-personal-info.png' %});width:322px;height:358px"></div>
+                </div>
+            </div>
+            <a class="lk-match-profs-btn btn btn_1 mb-1" href="/auth/logout/">Выйти</a>
+            <a class="lk-match-profs-btn btn btn_1 mb-2" data-popbox-target="popbox-delete-account">Удалить аккаунт</a>
+        </div>
+    </div>
+
+    <script src="{% static 'JS/easydropdown.js' %}"></script>
+    <script src="https://unpkg.com/imask"></script>
+
+    <script>
+        if (Boolean(document.querySelector('select'))) {
+            document.querySelectorAll('select').forEach(select => {
+                easydropdown(select)
+            })
+        }
+        if (Boolean(document.querySelector('.js-date-mask'))) {
+            document.querySelectorAll('.js-date-mask').forEach(date_input => {
+
+                let dateMask = IMask(date_input, {
+                  mask: Date,
+                  pattern: 'd/`m/`Y',
+                  lazy: true,
+
+                  format: function (date) {
+                    var day = date.getDate();
+                    var month = date.getMonth() + 1;
+                    var year = date.getFullYear();
+
+                    if (day < 10) day = "0" + day;
+                    if (month < 10) month = "0" + month;
+
+                    return [day, month, year].join('/');
+                    },
+                  parse: function (str) {
+                      var yearMonthDay = str.split('/');
+                      return new Date(yearMonthDay[2], yearMonthDay[1] - 1, yearMonthDay[0]);
+                  },
+                  min: new Date(1900, 0, 1),
+                  max: new Date(2030, 0, 1),
+                  overwrite: true,
+                  autofix: true
+                });
+            })
+        }
+    </script>
+{% endblock %}

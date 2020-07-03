@@ -1,0 +1,45 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Activation</title>
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/styles.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/BeautyForm.css" %}">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav"> <!-- Контент меню -->
+            <li class="nav-item">
+                    <a class="nav-link" href="/home/"> Главная страница </a>
+            </li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div type="fields">
+                    <h4> Активируйте наконец-то аккаунт!!!! </h4>
+                    Без активации вы не сможете:
+                    <ul>
+                        <li>Войти в свой аккаунт</li>
+                        <li>Получить доступ к тестам</li>
+                        <li>Связаться с нами</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</body>
+</html>

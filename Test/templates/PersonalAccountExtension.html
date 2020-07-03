@@ -1,0 +1,104 @@
+{% extends "PersonalAccount.html" %}
+{% load staticfiles %}
+
+<!-- Информация профиля -->
+{%  block PROFILE %}
+    <div type="fields">
+        <h3> Информация </h3>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="login">Логин</label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="login" name="login" value="{{ user.username }}" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="name">Имя</label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="name" name="name" value="{{ user.first_name }}" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="surname">Фамилия</label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="login" name="surname" value="{{ user.last_name }}" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="email">Почта</label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="email" name="email" value="{{ user.email }}" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="birth">Дата рождения</label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="birth" name="birth" value="{{ profile.date_of_birth }}" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="country">Страна</label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="country" name="country" value="{{ profile.country_of_residence}}" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="city">Город</label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" id="city" name="city" value="{{ profile.city_of_residence}}" readonly>
+                </div>
+            </div>
+        <a href="/account/changedata/"><button class="col-sm-4" type="button"> Изменить данные </button></a>
+    </div>
+{% endblock %}
+
+
+{% block MENU %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav"> <!-- Контент меню -->
+            <li class="nav-item">
+                    <a class="nav-link" href="/home/"> Главная страница </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact/"> Обратная связь </a>
+            </li>
+            {% if user.username %} <!-- Пользователь авторизирован -->
+                <div class="form-row auth_pare">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/personal_tests"> Мои тесты </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/logout/">Выйти ({{ user.username }})<span class="sr-only">(current)</span></a>
+                    </li>
+                </div>
+            {% else %} <!-- Пользователь не авторизован -->
+                <div class="form-row auth_pare">
+                    <li>
+                        <a class="nav-link" href="/auth/login/"> Войти </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/auth/registration/"> Зарегистрироваться </a>
+                    </li>
+                </div>
+            {% endif %}
+        </ul>
+      </div>
+    </nav>
+{% endblock %}

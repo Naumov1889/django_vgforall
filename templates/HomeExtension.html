@@ -1,0 +1,158 @@
+{% extends "Home.html" %}
+{% load staticfiles %}
+
+{##}
+{# <!-- МЕНЮ -->#}
+{#{% block MENU %}#}
+{#    <nav class="navbar navbar-expand-lg navbar-light bg-light">#}
+{#      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#      </button>#}
+{#      <div class="collapse navbar-collapse" id="navbarNavDropdown">#}
+{#        <ul class="navbar-nav"> <!-- Контент меню -->#}
+{#            <li class="nav-item">#}
+{#                    <a class="nav-link" href="/home/"> Главная страница </a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                    <a class="nav-link" href="#about_project"> О проекте </a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#                    <a class="nav-link" href="#aim"> Цель </a>#}
+{#            </li>#}
+{##}
+{#            {% if username %} <!-- Пользователь авторизирован -->#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="/contact/"> Обратная связь </a>#}
+{#                </li>#}
+{#                <div class="form-row auth_pare">#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="/account/"> Личный кабинет </a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a class="nav-link" href="/account/personal_tests/">Мои тесты</a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="/auth/logout/">Выйти ({{ username }})<span class="sr-only">(current)</span></a>#}
+{#                    </li>#}
+{#                </div>#}
+{##}
+{#            {% else %} <!-- Пользователь не авторизован -->#}
+{#                <div class="form-row auth_pare">#}
+{#                    <li>#}
+{#                        <a class="nav-link" href="/auth/login/"> Войти </a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a class="nav-link" href="/auth/registration/"> Зарегистрироваться </a>#}
+{#                    </li>#}
+{#                </div>#}
+{#            {% endif %}#}
+{##}
+{#        </ul>#}
+{#      </div>#}
+{#</nav>#}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block TITLE %}#}
+{#    <div id="Title" class="main_page_header"></div>#}
+{#{% endblock %}#}
+{##}
+{##}
+{##}
+{#{% block MAIN_COLUMN %}#}
+{#    <div class="main_page_content">#}
+{#        <a name="about_project"></a>#}
+{#        <h3> О проекте </h3>#}
+{#        <div id="about_project"></div>#}
+{##}
+{#        <a name="aim"></a>#}
+{#        <h3> Цель </h3>#}
+{#        <div id="aim"></div>#}
+{#    </div>#}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block CONTACTS %}#}
+{#    <div id="contact_data" class="fixedContactData"></div>#}
+{#{% endblock %}#}
+{##}
+
+{% block content %}
+    <div class="index-first-section">
+        <div class="container index-first-section__container">
+            <div class="index-first-section__text">
+                <div class="index-first-section__title">Профессиональная ориентация для всех</div>
+                <div class="index-first-section__subtitle">Помогаем найти свою профессию</div>
+                {% if user.is_authenticated %}
+                    <a class="index-first-section__btn js-index-first-section__btn btn btn_1" href="{% url 'all_tests' %}">Пройти тесты <i class="icon icon_arrow"></i></a>
+                {% else %}
+                    <div class="index-first-section__btn js-index-first-section__btn btn btn_1" data-popbox-target="popbox-enter">Пройти тесты <i class="icon icon_arrow"></i></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="feature-section">
+        <div class="container">
+            <h2 class="title title_h1">Почему мы?</h2>
+            <div class="feature-list">
+                <div class="feature">
+                    <div class="feature__icon-box gradient">
+                        <div class="feature__icon"
+                             style="min-width: 46px;min-height:42px;background-image:url({% static 'img/icon-feature-1.png' %})"></div>
+                    </div>
+                    <div class="feature__text"><b>Кому подходит</b>Подросткам от 14 лет и взрослым.</div>
+                </div>
+                <div class="feature">
+                    <div class="feature__icon-box gradient">
+                        <div class="feature__icon"
+                             style="min-width: 46px;min-height:46px;background-image:url({% static 'img/icon-feature-2.png' %})"></div>
+                    </div>
+                    <div class="feature__text"><b>Уникальность</b>Мы автоматизировали системы, чтобы уменьшить
+                        человеческий фактор и сэкономить ваше время.
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature__icon-box gradient">
+                        <div class="feature__icon"
+                             style="min-width: 49px;min-height:49px;background-image:url({% static 'img/icon-feature-3.png' %})"></div>
+                    </div>
+                    <div class="feature__text"><b>Цена</b>Прохождение тестов абсолютно бесплатно, нужно только
+                        зарегистрироваться
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature__icon-box gradient">
+                        <div class="feature__icon"
+                             style="min-width: 51px;min-height:53px;background-image:url({% static 'img/icon-feature-4.png' %})"></div>
+                    </div>
+                    <div class="feature__text"><b>Большая база</b>Поиск среди 110 профессий</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="index-callback-section">
+        <div class="container index-callback-section__container">
+            <h2 class="title title_h1">Задайте вопрос</h2>
+            <form class="form" method="POST">
+                {% csrf_token %}
+                <div class="input-container">
+                    <div class="input-container__icon-box"><i class="icon icon_user input-container__icon"></i></div>
+                    <input class="input input-container__input" required name="name" placeholder="Введите ваше имя">
+                </div>
+                <div class="input-container">
+                    <div class="input-container__icon-box"><i class="icon icon_email input-container__icon"></i></div>
+                    <input class="input input-container__input" required name="email" placeholder="Введите ваш e-mail">
+                </div>
+                <textarea class="textarea" name="text" required placeholder="Напишите свой вопрос"></textarea>
+                <button class="btn btn_1 js-callback-btn">Отправить вопрос <i class="icon icon_arrow"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.js-index-first-section__btn').addEventListener('click', function () {
+           document.querySelector('[data-popbox-id=popbox-enter] input[name=should_redirect_to_tests]').value = "yes";
+        });
+    </script>
+
+{% endblock %}

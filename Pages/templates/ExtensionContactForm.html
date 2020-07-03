@@ -1,0 +1,84 @@
+{% extends "ContactForm.html" %}
+
+{% block CONTACT_FORM2 %}
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-sm-12">
+                <form class="form" role="form" method="POST" action="/contact/">
+                    {% csrf_token %}
+                       <div class="row">
+                           <!-- Тема -->
+                            <div class="form-group col-sm-6">
+                                <label for="id_subject" class="h4">Тема</label>
+                                <input type="text" class="form-control" id="id_subject" name="subject" placeholder="Тема" required>
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group col-sm-6">
+                                <label for="id_email" class="h4">Email</label>
+                                <input type="email" class="form-control" id="id_email" name="sender" value="{{ email }}" required readonly>
+                            </div>
+                       </div>
+                        <div class="form-group">
+                            <label for="message" class="h4">Сообщение</label>
+                            <textarea id="message" class="form-control" rows="5" placeholder="Введите своё сообщение" name="message" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" name="copy" id="id_copy" />
+                                <label for="id_copy" class="h4">
+                                    Отправить копию себе
+                                </label>
+                        </div>
+                        <button type="submit" id="form-submit" class="btn btn-lg pull-right ">Отправить</button>
+                       <!-- <div id="msgSubmit" class="h3 text-center hidden">Message Submitted!</div> -->
+
+                </form>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+
+
+{% block CONTACT_FORM %}
+    <div type="fields">
+    <form action="/contact/" method="post">
+        {% csrf_token %}
+         <label for="id_subject">Тема</label>
+         <input type="text" id="id_subject" name="subject" placeholder="Тема.." required>
+
+         <label for="id_email">Email</label>
+         <input class="text" type="email" id="id_email" name="sender" value="{{ email }}"  placeholder="Email.." required readonly>
+
+         <label for="message">Сообщение</label>
+         <textarea class="text" id="message" rows="5" placeholder="Введите своё сообщение.." name="message" required></textarea>
+
+         <label for="id_copy">Отправить копию себе</label>
+         <input type="checkbox" name="copy" id="id_copy" />
+
+         <input type="submit" value="Отправить">
+    </form>
+    </div>
+{% endblock %}
+
+
+
+
+
+{% block MENU %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav"> <!-- Контент меню -->
+            <li class="nav-item">
+                    <a class="nav-link" href="/home/"> Главная страница </a>
+            </li>
+            <li class="nav-item auth_pare">
+                <a class="nav-link" href="/account/"> Личный кабинет </a>
+            </li>
+        </ul>
+      </div>
+    </nav>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/styles.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/BeautyForm.css" %}">
+    <script src="{% static "JS/bootstrap.min.js" %} "></script>
+    <script src="{% static "JS/jquery.min.js" %} "></script>
+    <title>Title</title>
+</head>
+<body>
+
+{% block MENU %}
+{% endblock %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <h2 class="contact_header">Форма обратной связи</h2>
+            {% block CONTACT_FORM %}
+            {% endblock %}
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+
+
+</body>
+</html>

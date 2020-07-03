@@ -1,0 +1,284 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="ru-Ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <title>Vgforall.ru — Профессиональная ориентация для всех</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.4/chartist.min.css">
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.4/chartist.min.js"></script>
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'CSS/concat-css-libs.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/concat-css.css' %}">
+
+    <script src="{% static 'JS/concat-js-libs.js' %}"></script>
+    <script type="text/javascript" src="{% static "JS/UsefulScripts.js" %}"></script>
+    <script src="{% static "JS/ProjectScripts.js" %}"></script>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="nav">
+        <a class="nav__item" href="{% url 'about' %}">Кто мы?</a>
+        <a class="nav__item js-sidebar-nav-item" href="{% url 'about_2' %}">Мы вам полезны, если...</a>
+        <a class="nav__item js-sidebar-nav-item" data-popbox-target="popbox-feedback">Обратная связь</a>
+    </div>
+    <div class="sidebar__item">
+        {% if user.is_authenticated %}
+            <a style="width: 220px;font-size: 20px;padding: 7px;" class="btn btn_1 header__user-btn" href="{% url 'all_tests' %}">Личный кабинет</a>
+        {% else %}
+            <a class="btn btn_1 header__user-btn js-sidebar-nav-item" data-popbox-target="popbox-enter">Войти</a>
+        {% endif %}
+    </div>
+    <div class="sidebar__item">
+        <div class="header__social-list">
+            <a class="header__social-box btn_1" href="https://www.youtube.com/channel/UCO5lFVq1xAIBPnze6eela3Q?view_as=subscriber">
+                <i class="icon icon_yt" style="min-width: 18px;min-height:12px;background-image:url({% static 'img/logo-yt.png' %})"></i>
+            </a>
+            <a class="header__social-box btn_1" href="https://www.instagram.com/vg.for.all/">
+                <i class="icon icon_inst" style="min-width: 18px;min-height:18px;background-image:url({% static 'img/logo-inst.png' %})"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="pusher">
+    <header class="header">
+        <div class="container header__container">
+            <a class="logo header__logo" href="{% url 'home' %}">
+                <img class="logo__img" src="{% static 'img/logo-vg-for-all.png' %}">
+                <span class="logo__text">Профессиональная<br>ориентация <span>для всех</span></span>
+            </a>
+            <div class="header__divider"></div>
+            <div class="header__link-list">
+                <a class="header__link" href="{% url 'about' %}">Кто мы?</a>
+                <a class="header__link" href="{% url 'about_2' %}">Мы вам полезны, если...</a>
+                <a class="header__link header__link_special" data-popbox-target="popbox-feedback">Обратная связь</a>
+            </div>
+            <div class="divider divider_horizontal header__divider"></div>
+            <div class="header__social-list">
+                <a class="header__social-box btn_1" href="https://www.youtube.com/channel/UCO5lFVq1xAIBPnze6eela3Q?view_as=subscriber">
+                    <i class="icon icon_yt" style="min-width: 18px;min-height:12px;background-image:url({% static 'img/logo-yt.png' %})"></i>
+                </a>
+                <a class="header__social-box btn_1" href="https://www.instagram.com/vg.for.all/">
+                    <i class="icon icon_inst" style="min-width: 18px;min-height:18px;background-image:url({% static 'img/logo-inst.png' %})"></i>
+                </a>
+            </div>
+
+
+            {% if user.is_authenticated %}
+                <a style="width: 183px;font-size: 20px;padding: 7px;" class="btn btn_1 header__user-btn" href="{% url 'all_tests' %}">Личный кабинет</a>
+            {% else %}
+                <a class="btn btn_1 header__user-btn"
+                   data-popbox-target="popbox-enter">Войти</a>
+            {% endif %}
+
+
+            <button class="burger header__burger"><i></i></button>
+        </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+    <footer class="footer">
+        <div class="container footer__container">
+            <div class="row"><a class="logo footer__logo" href="{% url 'home' %}"><img class="logo__img"
+                                                                                 src="{% static 'img/logo-vg-for-all.png' %}"><span
+                    class="logo__text">Профессиональная<br>ориентация <span>для всех</span></span></a>
+                <div class="footer__policy-n-terms"><a href="{% url 'confidentiality' %}">Политика конфиденциальности</a><a
+                        href="{% url 'terms' %}">Пользовательское соглашение</a></div>
+                <div class="footer__author"><span class="footer__author">Разработано <br><span
+                        class="text_color_primary">в <a href="https://rfim.ru/">rfim.ru</a></span></span></div>
+            </div>
+            <div class="row">
+                <div class="footer__copyright">© Все права защищены. 2020</div>
+            </div>
+        </div>
+    </footer>
+</div>
+<div class="overlay"></div>
+
+
+<div class="popbox" data-popbox-id="popbox-enter">
+    <div class="popbox_container"><i class="icon popbox__cross" data-popbox-close="popbox-enter"
+                                     style="width:12px;height:12px;background-image: url({% static 'img/icon-cross.svg' %}"></i>
+        <h1 class="title title_h1 mb-1">Войти</h1>
+        <form class="form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="should_redirect_to_tests" value="no">
+            <div class="input-container">
+                <div class="input-container__icon-box"><i class="icon icon_email input-container__icon"></i></div>
+                <input class="input input-container__input" required name="username" placeholder="Введите ваш логин">
+            </div>
+            <div class="input-container">
+                <div class="input-container__icon-box hover-display-none"><i class="icon icon_lock input-container__icon"></i></div>
+                <div class="input-container__icon-box hover-cursor-pointer js-password-visibility"><i class="icon icon_eye_1 input-container__icon"></i></div>
+                <input class="input input-container__input" required type="password" name="password"
+                       placeholder="Введите ваш пароль">
+            </div>
+            <button class="btn btn_1 js-login-btn">Войти</button>
+        </form>
+        <div class="popbox__password-recovery-btn" data-popbox-close="popbox-enter"
+             data-popbox-target="popbox-password-recovery">Забыли пароль?
+        </div>
+        <div class="popbox__bottom-btn" data-popbox-close="popbox-enter" data-popbox-target="popbox-register">
+            Регистрация
+        </div>
+    </div>
+</div>
+
+
+<div class="popbox" data-popbox-id="popbox-password-recovery">
+    <div class="popbox_container"><i class="icon popbox__cross" data-popbox-close="popbox-password-recovery"
+                                     style="width:12px;height:12px;background-image: url({% static 'img/icon-cross.svg' %}"></i>
+        <h1 class="title title_h1 mb-1">Восстановить пароль</h1>
+        <form class="form" method="post">
+            {% csrf_token %}
+            <div class="input-container">
+                <div class="input-container__icon-box"><i class="icon icon_email input-container__icon"></i></div>
+                <input class="input input-container__input" type="email" name="email" maxlength="254" required id="id_email" placeholder="Введите ваш e-mail">
+            </div>
+            <button class="btn btn_1 js-reset-password-btn">Восстановить</button>
+        </form>
+        <div class="popbox__bottom-btn" data-popbox-close="popbox-password-recovery"
+             data-popbox-target="popbox-register">Регистрация
+        </div>
+    </div>
+</div>
+<div class="popbox" data-popbox-id="popbox-register">
+    <div class="popbox_container"><i class="icon popbox__cross" data-popbox-close="popbox-register"
+                                     style="width:12px;height:12px;background-image: url({% static 'img/icon-cross.svg' %}"></i>
+        <h1 class="title title_h1 mb-1">Зарегистрироваться</h1>
+        <form class="form" method="post">
+            {% csrf_token %}
+            <div class="input-container">
+                <div class="input-container__icon-box"><i class="icon icon_user input-container__icon"></i></div>
+                <input type="text" name="username" maxlength="150" autofocus="" class="input input-container__input"
+                       placeholder="Введите логин" required="" id="id_username">
+            </div>
+            <div class="input-container">
+                <div class="input-container__icon-box hover-display-none"><i class="icon icon_lock input-container__icon"></i></div>
+                <div class="input-container__icon-box hover-cursor-pointer js-password-visibility"><i class="icon icon_eye_1 input-container__icon"></i></div>
+                <input type="password" name="password1" class="input input-container__input"
+                       placeholder="Введите пароль" required="" id="id_password1">
+            </div>
+            <div class="input-container">
+                <div class="input-container__icon-box hover-display-none"><i class="icon icon_lock input-container__icon"></i></div>
+                <div class="input-container__icon-box hover-cursor-pointer js-password-visibility"><i class="icon icon_eye_1 input-container__icon"></i></div>
+                <input type="password" name="password2" class="input input-container__input"
+                       placeholder="Повторите пароль" required="" id="id_password2">
+            </div>
+            <div class="input-container">
+                <div class="input-container__icon-box"><i class="icon icon_email input-container__icon"></i></div>
+                <input type="email" name="email" maxlength="254" class="input input-container__input"
+                       placeholder="Введите email" required="" id="id_email">
+            </div>
+            <button class="btn btn_1 js-register-btn">Зарегистрироваться</button>
+            <label class="checkbox checkbox-form-agreement"><span class="checkbox__text">Даю согласие на обработку  моих <a
+                    class="text_color_primary" href="{% url 'confidentiality' %}">персональных данных</a></span>
+                <input class="checkbox__input" checked type="checkbox"><span class="checkbox__checkmark"></span>
+            </label>
+        </form>
+        <div class="popbox__bottom-btn" data-popbox-close="popbox-register" data-popbox-target="popbox-enter">Войти
+        </div>
+    </div>
+</div>
+<div class="popbox popbox-no-bottom-btn" data-popbox-id="popbox-feedback">
+    <div class="popbox_container"><i class="icon popbox__cross" data-popbox-close="popbox-feedback"
+                                     style="width:12px;height:12px;background-image: url({% static 'img/icon-cross.svg' %}"></i>
+        <h1 class="title title_h1 mb-1">Задайте вопрос</h1>
+        <form class="form" method="post">
+            {% csrf_token %}
+            <div class="input-container">
+                <div class="input-container__icon-box"><i class="icon icon_user input-container__icon"></i></div>
+                <input class="input input-container__input" required name="name" placeholder="Введите ваше имя">
+            </div>
+            <div class="input-container">
+                <div class="input-container__icon-box"><i class="icon icon_email input-container__icon"></i></div>
+                <input class="input input-container__input" required name="email" placeholder="Введите ваш e-mail">
+            </div>
+            <textarea class="textarea" name="text" required placeholder="Напишите свой вопрос"></textarea>
+            <button class="btn btn_1 js-callback-btn">Отправить вопрос <i class="icon icon_arrow"></i></button>
+        </form>
+    </div>
+</div>
+<div class="popbox js-popbox-result popbox-no-bottom-btn" data-popbox-id="popbox-result">
+    <div class="popbox_container"><i class="icon popbox__cross" data-popbox-close="popbox-result"
+                                     style="width:16px;height:16px;background-image: url({% static 'img/icon-cross.svg' %})"></i>
+        <h2 class="title title_h2"><span class="text_color_primary">Спасибо, <br></span> ваша заявка отправлена</h2>
+    </div>
+</div>
+
+<div class="popbox popbox-no-bottom-btn" data-popbox-id="popbox-delete-account">
+    <div class="popbox_container"><i class="icon popbox__cross" data-popbox-close="popbox-delete-account"
+                                     style="width:16px;height:16px;background-image: url({% static 'img/icon-cross.svg' %})"></i>
+        <h2 class="title title_h2"><span class="text_color_primary">Удалить аккаунт?</h2>
+        <div class="popbox-delete-account__grid mt-1">
+            <a href="{% url 'delete_account' %}" class="btn btn_2 popbox-delete-account__btn">Да</a>
+            <button data-popbox-close="popbox-delete-account" class="btn btn_1 popbox-delete-account__btn">Нет</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .popbox-delete-account__grid {
+        display: flex;
+        justify-content: center;
+    }
+
+    .popbox-delete-account__btn {
+        margin: 10px;
+        padding: 10px 26px 12px 26px;
+    }
+
+    .popbox ul li:before {
+        left: 6px;
+        top: 9px;
+        width: 5px;
+        height: 5px;
+    }
+
+    .popbox.opened.visible {
+        z-index: 30 !important;
+    }
+    .my-spinner.lds-spinner {
+        z-index: 34 !important;
+    }
+
+    .sidebar .nav__item {
+        justify-content: flex-start;
+    }
+    .sidebar .nav__item:not(.nav__drop) {
+        padding-left: 20px;
+        width: 240px;
+    }
+</style>
+
+<div class="my-spinner lds-spinner">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+
+<script src="{% static 'JS/common.js' %}"></script>
+
+<script>
+    {% if open_user_enter_popup %}
+        popbox.open('popbox-enter');
+    {% endif %}
+</script>
+</body>
+</html>

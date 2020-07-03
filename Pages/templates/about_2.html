@@ -1,0 +1,45 @@
+{% extends "Home.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+    <div class="crumbs-container container">
+        <div class="crumbs"><a class="crumbs__link" href="{% url 'home' %}">Главная<i
+                class="icon icon_circle crumbs__icon"></i></a><a class="crumbs__link_current" href="">Мы Вам полезны, если....</a></div>
+    </div>
+    <div class="terms-page">
+        <div class="container">
+            <div class="title title_h2 text_left mb-1">
+                <div class="title__text">Мы Вам полезны, если....</div>
+            </div>
+            <ul class="mb-2">
+                <li>- вы не знаете какую профессию выбрать</li>
+                <li>- вам нужна отправная точка</li>
+                <li>- сомневаетесь в выбранной профессии</li>
+                <li>- не можете выбрать между профессиями</li>
+                <li>- вы запутались</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <style>
+        li {
+            font-size: 18px;
+        }
+
+        ul li {
+            padding-left: 0;
+        }
+
+        ul li:before {
+            display: none;
+            top: 8px;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+    </style>
+{% endblock %}

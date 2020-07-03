@@ -1,0 +1,183 @@
+{% extends "Home.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <script>
+    if ("{{ days_till_reset_test_allowed }}" == "Reload page") {
+        window.onload = function() {
+            if(!window.location.hash) {
+                window.location = window.location + '#loaded';
+                window.location.reload();
+            }
+        }
+    }
+    </script>
+    <div class="crumbs-container container">
+        <div class="crumbs">
+            <a class="crumbs__link" href="{% url 'home' %}">Главная<i class="icon icon_circle crumbs__icon"></i>
+            </a>
+            <a class="crumbs__link" href="{% url 'all_tests' %}">Личный кабинет<i class="icon icon_circle crumbs__icon"></i>
+            </a>
+            <a class="crumbs__link" {% if days_till_reset_test_allowed %}style="pointer-events: none"
+               {% else %}href="{% url 'reset_test' test.test_lesson_number %}"{% endif %}>
+                {{ test.test_title }}<i class="icon icon_circle crumbs__icon"></i>
+            </a>
+            <a class="crumbs__link_current" href="">Результат теста</a>
+        </div>
+    </div>
+    <div class="test-result">
+        <div class="container mb-3">
+            <h1 class="title title_h1">Результат теста № {{ test.test_lesson_number }}</h1>
+
+
+            {% if days_till_reset_test_allowed %}
+                <small>Пройти еще раз можно будет через {{ days_till_reset_test_allowed }}</small>
+            {% else %}
+                <a class="test-result__pass-again mb-1 mt-05" href="{% url 'reset_test' test.test_lesson_number %}">Пройти
+                    еще раз</a>
+            {% endif %}
+
+            {% if days_till_reset_test_allowed == "Reload page" %}
+            <p class="mt-2">Тест не пройден</p>
+            {% endif %}
+
+
+
+
+
+            <div class="test-result__content">
+                <div class="mt-2 mb-2">{{ results.first.result_description|safe }}</div>
+
+                <div class="test-result__accordion-list">
+                    {% for result in results %}
+                        {% if forloop.counter == 1 %}
+                        {% else %}
+                            <div style="margin-bottom: 20px" class="accordion">
+                                <div class="accordion__title">Результат от {{ result.whenWasFinished }}<i class="accordion__icon fas fa-caret-down"></i></div>
+                                <div class="accordion__content">{{ result.result_description|safe }}</div>
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .ct-chart-wrapper {
+            padding-top: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .ct-chart-wrapper {
+                overflow-x: auto;
+            }
+        }
+
+        .ct-chart {
+            position: relative;
+        }
+
+        {% if test.test_lesson_number == 2 %}
+            .ct-chart {
+                width: 730px;
+            }
+        {% endif %}
+
+        {% if test.test_lesson_number == 14 %}
+            .ct-chart {
+                width: 620px;
+            }
+        {% endif %}
+
+        .chart-text-label-y-top,
+        .chart-text-label-y-bottom,
+        .chart-text-label-x-left,
+        .chart-text-label-x-right,
+        .chart-text-corner-top-left,
+        .chart-text-corner-top-right,
+        .chart-text-corner-bottom-right,
+        .chart-text-corner-bottom-left {
+            position: absolute;
+            z-index: 2;
+            background: white;
+            padding: 0 4px 0 4px;
+        }
+
+        .chart-text-label-y-top {
+            left: Calc(50% - 62px);
+            top: -11px;
+        }
+
+        .chart-text-label-y-bottom {
+            left: Calc(50% - 54px);
+            bottom: 17px;
+        }
+
+        .chart-text-label-x-left {
+            top: Calc(50% - 28px);
+            left: 6px;
+        }
+
+        .chart-text-label-x-right {
+            right: -14px;
+            top: Calc(50% - 28px);
+        }
+
+        .chart-text-corner-top-left {
+            top: 26px;
+            left: 130px;
+        }
+
+        .chart-text-corner-top-right {
+            top: 26px;
+            right: 118px;
+        }
+
+        .chart-text-corner-bottom-right {
+            bottom: 54px;
+            right: 118px;
+        }
+
+        .chart-text-corner-bottom-left {
+            bottom: 54px;
+            left: 130px;
+        }
+
+        .chart-grid-horizontal {
+            position: absolute;
+            left: 110px;
+            right: 94px;
+            height: 2px;
+            background: grey;
+            top: Calc(50% - 14px);
+            transform: translateY(-50%);
+            color: black;
+        }
+
+        .ct-grid.ct-horizontal:nth-child(13) {
+            stroke: grey;
+            stroke-width: 2px;
+            stroke-dasharray: 0px;
+        }
+
+        {#fill: rgba(0,0,0,.4);#}
+        {#color:rgba(0,0,0,.4);#}
+        {#font-size:.75rem;#}
+
+    </style>
+    <script>
+        function wrap(el, wrapper) {
+            el.parentNode.insertBefore(wrapper, el);
+            wrapper.appendChild(el);
+        }
+
+        document.querySelectorAll('.ct-chart').forEach(chart => {
+            let chart_wrapper = document.createElement('div');
+            chart_wrapper.className = 'ct-chart-wrapper';
+            wrap(chart, chart_wrapper);
+        });
+    </script>
+{% endblock %}
+

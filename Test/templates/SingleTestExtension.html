@@ -1,0 +1,760 @@
+{% extends "SingleTest.html" %}
+{% load thumbnail %}
+
+{#{% block TIMER %}#}
+{#    {% if test.test_timer != 0 %}#}
+{#        <div class="timer__container">Осталось времени:#}
+{#            <div class="timer__numbers">Min: <span id="siteTimerMinutes"></span> Sec: <span#}
+{#                    id="siteTimerSeconds"></span></div>#}
+{#        </div>#}
+{##}
+{#        <style>#}
+{#            .timer__container {#}
+{#                position: fixed;#}
+{#                z-index: 10;#}
+{#                top: 68px;#}
+{#                left: 20px;#}
+{#                background-color: #fff;#}
+{#                line-height: 23px;#}
+{#            }#}
+{##}
+{#            .timer__numbers {#}
+{#                text-align: right;#}
+{#            }#}
+{#        </style>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+
+
+{#<!-- Создаем макет подсказки -->#}
+{#{% block TOOLTIP %}#}
+{#    <div id="HintBlock" class="MyTooltip"></div>#}
+{#{% endblock %}#}
+
+{##}
+{#<!-- Тест с вариантами ответов -->#}
+{#{% block QUESTIONS_WITH_VARIANTS %}#}
+{#    {% if test.test_lesson_number == 11 %}#}
+{#        <h3>Тип 2</h3>#}
+{#    {% endif %}#}
+{#    {% for question in questions_with_variants %}#}
+{##}
+{#        {% if test.test_lesson_number == 12 %}#}
+{#            {% if forloop.counter == 1 %}#}
+{#                <p>Левогорск больше, чем Правогорск. Новогорск больше, чем Левогорск.</p>#}
+{#            {% elif forloop.counter == 2 %}#}
+{#                <p>Света и Евгения блондинки. Борис и Роберт брюнеты. Света и Роберт высокого роста.</p>#}
+{#            {% elif forloop.counter == 4 %}#}
+{#                <p>Марта сейчас играет в баскетбол.</p>#}
+{#            {% elif forloop.counter == 5 %}#}
+{#                <p>Андрей бегает быстрее Сергея.</p>#}
+{#            {% elif forloop.counter == 6 %}#}
+{#                <p>Оксана, Марк, Эрик и Анжела сидят в ряд слева направо в указанном порядке. Оксана и Эрик поменялись#}
+{#                    местами, а затем это же сделали Эрик и Марк.</p>#}
+{#            {% elif forloop.counter == 8 %}#}
+{#                <p>Несколько друзей живут в доме, на каждом этаже которого находится по одной квартире. Антон живет в#}
+{#                    квартире, расположенной под квартирой Юлии, а Марина - в квартире на квартирой Софьи. Софья живет в#}
+{#                    квартире под квартирой Антона. Юлия живет вместе с Романом. Петр живет на верхнем этаже.</p>#}
+{#            {% elif forloop.counter == 10 %}#}
+{#                <p>Некоторые члены школьного хора были награждены книгами.</p>#}
+{#            {% elif forloop.counter == 11 %}#}
+{#                <p>Яше восемь лет, и он в два раза моложе своего брата Георгия. Яна на два года моложе Яши и на столько#}
+{#                    же лет старше Миши.</p>#}
+{#            {% elif forloop.counter == 15 %}#}
+{#                <p>В гонке участвуют пять машин. «Хонда» обогнала «Лендровер», но не догнала «Астру». «Рено» не удалось#}
+{#                    догнать «Гранаду», но он перегнал «Астру».</p>#}
+{#            {% elif forloop.counter == 17 %}#}
+{#                <p>Кира умеет играть на фортепьяно, но не играет на флейте, а Кирилл играет на скрипке и на флейте.#}
+{#                    Татьяна играет на скрипке, но не играет на фортепьяно, а Ангелина играет на флейте, но не играет на#}
+{#                    скрипке.</p>#}
+{#            {% elif forloop.counter == 18 %}#}
+{#                <p>Человек ехал из Яблонска в Бирск. Вскоре после того, как он проехал Простоквашино, он остановился#}
+{#                    выпить кофе в Синегорске, находившемся на середине его пути.</p>#}
+{#            {% elif forloop.counter == 19 %}#}
+{#                <p>Экзамен сдавали пятьдесят студентов.</p>#}
+{#            {% elif forloop.counter == 20 %}#}
+{#                <p>Одногорск находится северо-восточнее Трехгорска.</p>#}
+{#            {% elif forloop.counter == 21 %}#}
+{#                <p>В воскресенье погода была более сырой, чем в понедельник, но более солнечной, чем в субботу.</p>#}
+{#            {% elif forloop.counter == 22 %}#}
+{#                <p>Сегодня вторник.</p>#}
+{#            {% elif forloop.counter == 23 %}#}
+{#                <p>В подъезде трехэтажного дома живут шесть семей. Квартиры в подъезде пронумерованы так, что входные#}
+{#                    двери квартир с четными номерами расположены справа, а с нечетными - слева. Квартира 1 и 2 находятся#}
+{#                    на первом этаже, 3 и 4 - на втором, а 5 и 6 - на последнем. Дверь в квартиру Ивановых расположена#}
+{#                    справа, а сама квартира расположена между двумя другими.</p>#}
+{#            {% elif forloop.counter == 24 %}#}
+{#                <p>В том же подъезде Петровы живут в квартире с четным номером, причем квартира Васильевых находится#}
+{#                    ниже. Веселовы живут напротив Ивановых, а Воронины и Пироговы живут напротив Ивановых, а Воронины и#}
+{#                    Пироговы живут напротив семей, первые буквы фамилий которых не совпадают с их собственными.</p>#}
+{#            {% elif forloop.counter == 29 %}#}
+{#                <p>Константин Шубин, его жена Елена и одна из их дочерей-близнецов живут на углу Яблоневого проезда и#}
+{#                    Грушевой улицы. У Шубиных также есть два сына (Федор и Устин), которые живут справа и слева от них.#}
+{#                    Федор женат на Амилии, и они живут на Грушевой улице. Софья носит такое же имя, как и ее невестка,#}
+{#                    которая все еще живет с родителями. Серафима развелась с Денисом и проживает в соседнем городе, но#}
+{#                    регулярно навещает своего брата и двух сыновей в Яблоневом проезде. Все ближайшие родственники#}
+{#                    упомянуты в тексте.</p>#}
+{#            {% endif %}#}
+{#        {% endif %}#}
+{##}
+{#        <div class="form-row">#}
+{#            {% if test.test_lesson_number == 5 %}#}
+{#                <label for="{{ question.id }}-first" class="mr-3" onmousemove="showHint('')"#}
+{#                       onmouseout="hideHint()">#}
+{#                    {{ question.question_text|safe }}#}
+{#                </label>#}
+{#            {% else %}#}
+{#                <label for="{{ question.id }}-first" class="col-md-4 mr-3" onmousemove="showHint('')"#}
+{#                       onmouseout="hideHint()">#}
+{#                    {{ question.question_text|safe }}#}
+{#                </label>#}
+{#            {% endif %}#}
+{##}
+{#            {% thumbnail question.image "1000x200" crop="center" as image %}#}
+{#                <img src="{{ image.url }}" width="{{ im.width }}" height="{{ image.height }} " alt="image failed">#}
+{#            {% endthumbnail %}#}
+{##}
+{##}
+{#            {% if question.question_with_one_answer %}#}
+{#                <!-- Radio choices -->#}
+{#                <div class="form-group">#}
+{#                    {% for variant, hint in question.question_variants %}#}
+{#                        {% if forloop.counter == 1 %}#}
+{#                            <span>#}
+{#                            <input type="radio" name="{{ question.id }}" id="{{ question.id }}-first"#}
+{#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %}>#}
+{#                            <label for="{{ question.id }}-first"> {{ variant|safe }} {% if hint %}#}
+{#                                <i style="font-size: 13px;vertical-align: super;" onmousemove="showHint('{{ hint }}')"#}
+{#                                   onmouseout="hideHint()" class="far fa-question-circle"></i>{% endif %}</label>#}
+{#                            </span>#}
+{#                        {% else %}#}
+{#                            <span>#}
+{#                            <input type="radio" name="{{ question.id }}" id="{{ question.id }}{{ forloop.counter }}"#}
+{#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %}>#}
+{#                            <label for="{{ question.id }}{{ forloop.counter }}"> {{ variant|safe }} {% if hint %}#}
+{#                                <i style="font-size: 13px;vertical-align: super;" onmousemove="showHint('{{ hint }}')"#}
+{#                                   onmouseout="hideHint()" class="far fa-question-circle"></i>{% endif %}</label>#}
+{#                            </span>#}
+{#                        {% endif %}#}
+{#                        #}
+{#                        {% if test.test_lesson_number != 8 %}#}
+{#                            <br>#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            {% else %}#}
+{#                <!-- Check choices -->#}
+{#                <div class="form-group form-group-checkboxes">#}
+{#                    {% for variant in question.question_variants %}#}
+{#                        <input type="checkbox" name="{{ question.id }}" id="{{ question.id }}" value="{{ variant }}"#}
+{#                               required>#}
+{#                        <label for="{{ question.id }}"> {{ variant|safe }} </label> <br>#}
+{#                    {% endfor %}#}
+{##}
+{#                    {% if test.test_lesson_number == 9 %}#}
+{#                        {% for variant, hint in question.question_variants %}#}
+{#                            {% if forloop.counter == 1 %}#}
+{#                                <span style="display: flex; flex-direction: column">#}
+{#                                    <span>{{ variant|safe }}</span>#}
+{##}
+{#                                    <span class='test_9_checkboxes'>#}
+{#                                    <input type="checkbox" name="{{ question.id }}"#}
+{#                                           id="{{ question.id }}{{ forloop.counter }}-yes-first"#}
+{#                                           value="да">#}
+{#                                    <label for="{{ question.id }}{{ forloop.counter }}-yes-first">Да</label>#}
+{#                                    /#}
+{#                                    <input type="checkbox" name="{{ question.id }}"#}
+{#                                           id="{{ question.id }}{{ forloop.counter }}-no-first" value="нет">#}
+{#                                    <label for="{{ question.id }}{{ forloop.counter }}-no-first">Нет</label>#}
+{#                                    </span>#}
+{#                                </span>#}
+{##}
+{#                            {% else %}#}
+{#                                <span style="display: flex; flex-direction: column">#}
+{#                                    <span>{{ variant|safe }}</span>#}
+{##}
+{#                                    <span class='test_9_checkboxes'>#}
+{#                                    <input type="checkbox" name="{{ question.id }}"#}
+{#                                           id="{{ question.id }}{{ forloop.counter }}-yes"#}
+{#                                           value="да">#}
+{#                                    <label for="{{ question.id }}{{ forloop.counter }}-yes">Да</label>#}
+{#                                    /#}
+{#                                    <input type="checkbox" name="{{ question.id }}"#}
+{#                                           id="{{ question.id }}{{ forloop.counter }}-no"#}
+{#                                           value="нет">#}
+{#                                    <label for="{{ question.id }}{{ forloop.counter }}-no">Нет</label>#}
+{#                                    </span>#}
+{#                                </span>#}
+{#                            {% endif %}#}
+{#                        {% endfor %}#}
+{#                    {% else %}#}
+{#                        {% for variant, hint in question.question_variants %}#}
+{#                            <input type="checkbox" name="{{ question.id }}" id="{{ question.id }}{{ forloop.counter }}"#}
+{#                                   value="{{ variant }}">#}
+{#                            <label for="{{ question.id }}{{ forloop.counter }}"> {{ variant|safe }} </label>#}
+{#                            <br>#}
+{#                        {% endfor %}#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#        {% if test.test_lesson_number == 12 %}#}
+{#            {% if forloop.counter == 2 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 11 or forloop.counter == 12 or forloop.counter == 13 or forloop.counter == 15 or forloop.counter == 23 or forloop.counter == 24 or forloop.counter == 25 or forloop.counter == 26 or forloop.counter == 27 or forloop.counter == 29 or forloop.counter == 30 %}#}
+{#            {% else %}#}
+{#                <hr>#}
+{#                <br>#}
+{#            {% endif %}#}
+{#        {% else %}#}
+{#            <hr>#}
+{#        {% endif %}#}
+{##}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+
+
+<!-- Тест с ответом -->
+{#{% block QUESTIONS_WITH_ANSWER %}#}
+{#    {% if test.test_lesson_number == 11 %}#}
+{#    <h3>Тип 1</h3>#}
+{#    {% endif %}#}
+{#    <!-- Тест 15 -->#}
+{##}
+{#    {% if test.test_lesson_number == 14 %}#}
+{##}
+{#        <div id="Timer" style="display: none">#}
+{#            <p>Осталось времени: Min: <span id="siteTimerMinutes"></span> Sec: <span id="siteTimerSeconds"></span></p>#}
+{#        </div>#}
+{##}
+{#        {% for question in questions_with_answer %}#}
+{#            {% if question == questions_with_answer|first %}#}
+{##}
+{#                <div id="{{ question.id }}_block">#}
+{#                    {% if question.audio %}#}
+{#                        <div class='test_14_audition_number'>1 прослушивание</div>#}
+{#                        <audio id="{{ question.id }}_audio" onended="control_audio(this.id)"#}
+{#                               onpause="control_audio(this.id)" controls controlsList="nodownload">#}
+{#                            <source src="{{ MEDIA_URL }}{{ question.audio }}" type="audio/mpeg">#}
+{#                        </audio>#}
+{#                    {% endif %}#}
+{##}
+{#                    <div id="{{ question.id }}_form" class="form-row" style="display: none">#}
+{#                        <label id="{{ question.id }}_label" for="{{ question.id }}" class="col-md-4"#}
+{#                               onmousemove="showHint('{{ question.hint }}')" onmouseout="hideHint()">#}
+{#                            {{ question.question_text }}#}
+{#                        </label>#}
+{#                        <textarea rows="3" name="{{ question.id }}" id="{{ question.id }}" placeholder="Введите ответ"#}
+{#                                  class="col-md-8 rounded"></textarea>#}
+{#                        <button id="{{ question.id }}_button" type="button" onclick="button_clicked({{ question.id }})">#}
+{#                            Закончить ввод#}
+{#                        </button>#}
+{#                    </div>#}
+{#                    <hr>#}
+{#                </div>#}
+{#            {% else %}#}
+{#                <div id="{{ question.id }}_block" style="display: none">#}
+{#                    {% if question.audio %}#}
+{#                        <div class='test_14_audition_number'>1 прослушивание</div>#}
+{#                        <audio id="{{ question.id }}_audio" onended="control_audio(this.id)"#}
+{#                               onpause="control_audio(this.id)" controls controlsList="nodownload">#}
+{#                            <source src="{{ MEDIA_URL }}{{ question.audio }}" type="audio/mpeg">#}
+{#                        </audio>#}
+{#                    {% endif %}#}
+{##}
+{#                    <div id="{{ question.id }}_form" class="form-row" style="display: none">#}
+{#                        <label id="{{ question.id }}_label" for="{{ question.id }}" class="col-md-4"#}
+{#                               onmousemove="showHint('{{ question.hint }}')" onmouseout="hideHint()">#}
+{#                            {{ question.question_text }}#}
+{#                        </label>#}
+{#                        <textarea rows="3" name="{{ question.id }}" id="{{ question.id }}" placeholder="Введите ответ"#}
+{#                                  class="col-md-8 rounded"></textarea>#}
+{#                        <button id="{{ question.id }}_button" type="button" onclick="button_clicked({{ question.id }})">#}
+{#                            Закончить ввод#}
+{#                        </button>#}
+{#                    </div>#}
+{#                    <hr>#}
+{#                </div>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+{##}
+{##}
+{##}
+{##}
+{#    {% if test.test_lesson_number != 14 %}#}
+{#        {% for question in questions_with_answer %}#}
+{##}
+{#            <div class="form-row">#}
+{#                <label for="{{ question.id }}" class="col-md-4 mr-3" onmousemove="showHint('{{ question.hint }}')"#}
+{#                       onmouseout="hideHint()">#}
+{#                    {{ question.question_text }}#}
+{#                </label>#}
+{#                {% if test.test_lesson_number == 1 or test.test_lesson_number == 11 %}#}
+{#                <textarea required rows="3" name="{{ question.id }}" id="{{ question.id }}" placeholder="Введите ответ" class="col-md-7 rounded"></textarea>#}
+{#                {% else %}#}
+{#                <textarea rows="3" name="{{ question.id }}" id="{{ question.id }}" placeholder="Введите ответ" class="col-md-7 rounded"></textarea>#}
+{#                {% endif %}#}
+{#            </div>#}
+{##}
+{#            {% thumbnail question.image "200x200" crop="center" as image %}#}
+{#                <img src="{{ image.url }}" width="{{ im.width }}" height="{{ image.height }} " alt="image failed">#}
+{#            {% endthumbnail %}#}
+{##}
+{#            <hr>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+{##}
+{#{% endblock %}#}
+{##}
+
+{% block QUESTIONS_WITH_ANSWER %}
+
+    {% if test.test_lesson_number == 11 %}
+        <h3 class="title title_h3 text_left mt-1 mb-1">Тип 1</h3>
+    {% endif %}
+
+    {% if test.test_lesson_number == 14 %}
+
+        <div id="Timer" style="display: none">
+            <p>Осталось времени: Min: <span id="siteTimerMinutes"></span> Sec: <span id="siteTimerSeconds"></span></p>
+        </div>
+
+        {% for question in questions_with_answer %}
+            {% if question == questions_with_answer|first %}
+
+                <div id="{{ question.id }}_block">
+                    {% if question.audio %}
+                        <div style="margin-bottom: 0.5rem" class='test_14_audition_number'>1 прослушивание</div>
+                        <audio id="{{ question.id }}_audio" onended="control_audio(this.id)"
+                               onpause="control_audio(this.id)" controls controlsList="nodownload">
+                            <source src="{{ MEDIA_URL }}{{ question.audio }}" type="audio/mpeg">
+                        </audio>
+                    {% endif %}
+
+                    <div id="{{ question.id }}_form" class="form-row" style="display: none">
+                        <label id="{{ question.id }}_label" for="{{ question.id }}" class="col-md-4"
+                               onmousemove="showHint('{{ question.hint }}')" onmouseout="hideHint()">
+                            {{ question.question_text }}
+                        </label>
+
+                        <div class="question">
+{#                            <div class="question__question">{{ question.question_text }}</div>#}
+                            <textarea class="textarea question__answer question__textarea"
+                                          placeholder="Введите ваш ответ" name="{{ question.id }}" id="{{ question.id }}"></textarea>
+                        </div>
+
+{#                        <textarea rows="3" name="{{ question.id }}" id="{{ question.id }}" placeholder="Введите ответ"#}
+{#                                  class="col-md-8 rounded"></textarea>#}
+                        <button class="btn btn_1 mt-1" id="{{ question.id }}_button" type="button" onclick="button_clicked({{ question.id }})">
+                            Закончить ввод
+                        </button>
+                    </div>
+                </div>
+            {% else %}
+                <div id="{{ question.id }}_block" style="display: none">
+                    {% if question.audio %}
+                        <div style="margin-bottom: 0.5rem" class='test_14_audition_number'>1 прослушивание</div>
+                        <audio id="{{ question.id }}_audio" onended="control_audio(this.id)"
+                               onpause="control_audio(this.id)" controls controlsList="nodownload">
+                            <source src="{{ MEDIA_URL }}{{ question.audio }}" type="audio/mpeg">
+                        </audio>
+                    {% endif %}
+
+                    <div id="{{ question.id }}_form" class="form-row" style="display: none">
+                        <label id="{{ question.id }}_label" for="{{ question.id }}" class="col-md-4"
+                               onmousemove="showHint('{{ question.hint }}')" onmouseout="hideHint()">
+                            {{ question.question_text }}
+                        </label>
+                        <div class="question">
+{#                            <div class="question__question">{{ question.question_text }}</div>#}
+                            <textarea class="textarea question__answer question__textarea"
+                                          placeholder="Введите ваш ответ" name="{{ question.id }}" id="{{ question.id }}"></textarea>
+                        </div>
+{#                        <textarea rows="3" name="{{ question.id }}" id="{{ question.id }}" placeholder="Введите ответ"#}
+{#                                  class="col-md-8 rounded"></textarea>#}
+                        <button class="btn btn_1 mt-1" id="{{ question.id }}_button" type="button" onclick="button_clicked({{ question.id }})">
+                            Закончить ввод
+                        </button>
+                    </div>
+
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if test.test_lesson_number != 14 %}
+        <div class="question-list">
+            {% for question in questions_with_answer %}
+                {##}
+                {#                <div class="form-row">#}
+                {#                    <label for="{{ question.id }}" class="col-md-4 mr-3" onmousemove="showHint('{{ question.hint }}')"#}
+                {#                           onmouseout="hideHint()">#}
+                {#                        {{ question.question_text }}#}
+                {#                    </label>#}
+                {#                    {% if test.test_lesson_number == 1 or test.test_lesson_number == 11 %}#}
+                {#                        <textarea required rows="3" name="{{ question.id }}" id="{{ question.id }}"#}
+                {#                                  placeholder="Введите ответ" class="col-md-7 rounded"></textarea>#}
+                {#                    {% else %}#}
+                {#                        <textarea rows="3" name="{{ question.id }}" id="{{ question.id }}" placeholder="Введите ответ"#}
+                {#                                  class="col-md-7 rounded"></textarea>#}
+                {#                    {% endif %}#}
+                {#                </div>#}
+                {##}
+                {#                {% thumbnail question.image "200x200" crop="center" as image %}#}
+                {#                    <img src="{{ image.url }}" width="{{ im.width }}" height="{{ image.height }} " alt="image failed">#}
+                {#                {% endthumbnail %}#}
+                {##}
+                {#                <hr>#}
+
+                <div class="question">
+                    <div class="question__question">{{ question.question_text }}</div>
+                    {% if test.test_lesson_number == 1 or test.test_lesson_number == 11 %}
+                        <textarea required name="{{ question.id }}" id="{{ question.id }}" class="textarea question__answer question__textarea" placeholder="Введите ваш ответ"></textarea>
+                    {% else %}
+                        <textarea name="{{ question.id }}" id="{{ question.id }}" class="textarea question__answer question__textarea" placeholder="Введите ваш ответ"></textarea>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+
+{% endblock %}
+
+
+
+{#{% block QUESTIONS_WITH_VARIANTS %}#}
+{##}
+{##}
+{#    {% for question in questions_with_variants %}#}
+{##}
+{#        {% if question.question_with_one_answer %}#}
+{#            <div class="question-list">#}
+{##}
+{##}
+{#                {% for variant, hint in question.question_variants %}#}
+{#                    {% if forloop.counter == 1 %}#}
+{#                        <div class="question">#}
+{#                            <div class="question__question">2. Скала - это</div>#}
+{#                            <div class="question__checkbox-list question-checkbox-list">#}
+{#                                <label class="checkbox question-checkbox-list__item"><span#}
+{#                                        class="checkbox__text">{{ variant|safe }}</span>#}
+{#                                    <input class="checkbox__input" name="{{ question.id }}" id="{{ question.id }}-first"#}
+{#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %} type="radio"><span#}
+{#                                            class="checkbox__checkmark"></span>#}
+{#                                </label>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <span>#}
+{#                            <input type="radio" name="{{ question.id }}" id="{{ question.id }}-first"#}
+{#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %}>#}
+{#                            <label for="{{ question.id }}-first"> {{ variant|safe }} {% if hint %}#}
+{#                                <i style="font-size: 13px;vertical-align: super;" onmousemove="showHint('{{ hint }}')"#}
+{#                                   onmouseout="hideHint()" class="far fa-question-circle"></i>{% endif %}</label>#}
+{#                            </span>#}
+{#                    {% else %}#}
+{#                        <div class="question">#}
+{#                            <div class="question__question">2. Скала - это</div>#}
+{#                            <div class="question__checkbox-list question-checkbox-list">#}
+{#                                <label class="checkbox question-checkbox-list__item"><span#}
+{#                                        class="checkbox__text">{{ variant|safe }}</span>#}
+{#                                    <input class="checkbox__input" name="{{ question.id }}" id="{{ question.id }}-first"#}
+{#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %} type="radio"><span#}
+{#                                            class="checkbox__checkmark"></span>#}
+{#                                </label>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <span>#}
+{#                            <input type="radio" name="{{ question.id }}" id="{{ question.id }}{{ forloop.counter }}"#}
+{#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %}>#}
+{#                            <label for="{{ question.id }}{{ forloop.counter }}"> {{ variant|safe }} {% if hint %}#}
+{#                                <i style="font-size: 13px;vertical-align: super;" onmousemove="showHint('{{ hint }}')"#}
+{#                                   onmouseout="hideHint()" class="far fa-question-circle"></i>{% endif %}</label>#}
+{#                            </span>#}
+{#                    {% endif %}#}
+{##}
+{#                    {% if test.test_lesson_number != 8 %}#}
+{#                        <br>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        {% endif %}#}
+{##}
+{#    {% endfor %}#}
+{#{% endblock %}#}
+
+{% block QUESTIONS_WITH_VARIANTS %}
+    <div class="question-list">
+        {% if test.test_lesson_number == 11 %}
+            <h3 class="title title_h3 text_left mt-1 mb-1">Тип 2</h3>
+        {% endif %}
+        {% for question in questions_with_variants %}
+
+            {% if test.test_lesson_number == 12 %}
+                {% if forloop.counter == 1 %}
+                    <p>Левогорск больше, чем Правогорск. Новогорск больше, чем Левогорск.</p>
+                {% elif forloop.counter == 2 %}
+                    <p>Света и Евгения блондинки. Борис и Роберт брюнеты. Света и Роберт высокого роста.</p>
+                {% elif forloop.counter == 4 %}
+                    <p>Марта сейчас играет в баскетбол.</p>
+                {% elif forloop.counter == 5 %}
+                    <p>Андрей бегает быстрее Сергея.</p>
+                {% elif forloop.counter == 6 %}
+                    <p>Оксана, Марк, Эрик и Анжела сидят в ряд слева направо в указанном порядке. Оксана и Эрик
+                        поменялись
+                        местами, а затем это же сделали Эрик и Марк.</p>
+                {% elif forloop.counter == 8 %}
+                    <p>Несколько друзей живут в доме, на каждом этаже которого находится по одной квартире. Антон живет
+                        в
+                        квартире, расположенной под квартирой Юлии, а Марина - в квартире на квартирой Софьи. Софья
+                        живет в
+                        квартире под квартирой Антона. Юлия живет вместе с Романом. Петр живет на верхнем этаже.</p>
+                {% elif forloop.counter == 10 %}
+                    <p>Некоторые члены школьного хора были награждены книгами.</p>
+                {% elif forloop.counter == 11 %}
+                    <p>Яше восемь лет, и он в два раза моложе своего брата Георгия. Яна на два года моложе Яши и на
+                        столько
+                        же лет старше Миши.</p>
+                {% elif forloop.counter == 15 %}
+                    <p>В гонке участвуют пять машин. «Хонда» обогнала «Лендровер», но не догнала «Астру». «Рено» не
+                        удалось
+                        догнать «Гранаду», но он перегнал «Астру».</p>
+                {% elif forloop.counter == 17 %}
+                    <p>Кира умеет играть на фортепьяно, но не играет на флейте, а Кирилл играет на скрипке и на флейте.
+                        Татьяна играет на скрипке, но не играет на фортепьяно, а Ангелина играет на флейте, но не играет
+                        на
+                        скрипке.</p>
+                {% elif forloop.counter == 18 %}
+                    <p>Человек ехал из Яблонска в Бирск. Вскоре после того, как он проехал Простоквашино, он остановился
+                        выпить кофе в Синегорске, находившемся на середине его пути.</p>
+                {% elif forloop.counter == 19 %}
+                    <p>Экзамен сдавали пятьдесят студентов.</p>
+                {% elif forloop.counter == 20 %}
+                    <p>Одногорск находится северо-восточнее Трехгорска.</p>
+                {% elif forloop.counter == 21 %}
+                    <p>В воскресенье погода была более сырой, чем в понедельник, но более солнечной, чем в субботу.</p>
+                {% elif forloop.counter == 22 %}
+                    <p>Сегодня вторник.</p>
+                {% elif forloop.counter == 23 %}
+                    <p>В подъезде трехэтажного дома живут шесть семей. Квартиры в подъезде пронумерованы так, что
+                        входные
+                        двери квартир с четными номерами расположены справа, а с нечетными - слева. Квартира 1 и 2
+                        находятся
+                        на первом этаже, 3 и 4 - на втором, а 5 и 6 - на последнем. Дверь в квартиру Ивановых
+                        расположена
+                        справа, а сама квартира расположена между двумя другими.</p>
+                {% elif forloop.counter == 24 %}
+                    <p>В том же подъезде Петровы живут в квартире с четным номером, причем квартира Васильевых находится
+                        ниже. Веселовы живут напротив Ивановых, а Воронины и Пироговы живут напротив Ивановых, а
+                        Воронины и
+                        Пироговы живут напротив семей, первые буквы фамилий которых не совпадают с их собственными.</p>
+                {% elif forloop.counter == 29 %}
+                    <p>Константин Шубин, его жена Елена и одна из их дочерей-близнецов живут на углу Яблоневого проезда
+                        и
+                        Грушевой улицы. У Шубиных также есть два сына (Федор и Устин), которые живут справа и слева от
+                        них.
+                        Федор женат на Амилии, и они живут на Грушевой улице. Софья носит такое же имя, как и ее
+                        невестка,
+                        которая все еще живет с родителями. Серафима развелась с Денисом и проживает в соседнем городе,
+                        но
+                        регулярно навещает своего брата и двух сыновей в Яблоневом проезде. Все ближайшие родственники
+                        упомянуты в тексте.</p>
+                {% endif %}
+            {% endif %}
+
+
+            <div class="question">
+                {#                {% if test.test_lesson_number == 5 %}#}
+                {#                    <label for="{{ question.id }}-first" class="mr-3" onmousemove="showHint('')"#}
+                {#                           onmouseout="hideHint()">#}
+                {#                        {{ question.question_text|safe }}#}
+                {#                    </label>#}
+                {#                {% else %}#}
+                {#                    <label for="{{ question.id }}-first" class="col-md-4 mr-3" onmousemove="showHint('')"#}
+                {#                           onmouseout="hideHint()">#}
+                {#                        {{ question.question_text|safe }}#}
+                {#                    </label>#}
+                {#                {% endif %}#}
+                <div class="question__question">{{ question.question_text|safe }}</div>
+
+
+
+                {% if question.question_with_one_answer %}
+                    <div class="question__checkbox-list question-checkbox-list">
+                        {% for variant, hint in question.question_variants %}
+
+                            <label class="checkbox question-checkbox-list__item">
+                                <span class="checkbox__text">{{ variant|safe }} {% if hint %}
+                                    <i style="font-size: 13px;vertical-align: super;"
+                                       onmousemove="showHint('{{ hint }}')"
+                                       onmouseout="hideHint()" class="far fa-question-circle"></i>{% endif %}</span>
+                                <input class="checkbox__input" name="{{ question.id }}"
+                                       id="{{ question.id }}-{{ forloop.counter }}" value="{{ variant }}"
+                                       {% if test.test_lesson_number != 13 %}required{% endif %}
+                                       type="radio">
+                                <span class="checkbox__checkmark"></span>
+                            </label>
+                        {% endfor %}
+                    </div>
+
+                    {#                    <!-- Radio choices -->#}
+                    {#                    <div class="form-group">#}
+                    {#                        {% for variant, hint in question.question_variants %}#}
+                    {#                            {% if forloop.counter == 1 %}#}
+                    {#                                <span>#}
+                    {#                            <input type="radio" name="{{ question.id }}" id="{{ question.id }}-first"#}
+                    {#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %}>#}
+                    {#                            <label for="{{ question.id }}-first"> {{ variant|safe }} {% if hint %}#}
+                    {#                                <i style="font-size: 13px;vertical-align: super;" onmousemove="showHint('{{ hint }}')"#}
+                    {#                                   onmouseout="hideHint()" class="far fa-question-circle"></i>{% endif %}</label>#}
+                    {#                            </span>#}
+                    {#                            {% else %}#}
+                    {#                                <span>#}
+                    {#                            <input type="radio" name="{{ question.id }}" id="{{ question.id }}{{ forloop.counter }}"#}
+                    {#                                   value="{{ variant }}" {% if test.test_lesson_number != 13 %}required{% endif %}>#}
+                    {#                            <label for="{{ question.id }}{{ forloop.counter }}"> {{ variant|safe }} {% if hint %}#}
+                    {#                                <i style="font-size: 13px;vertical-align: super;" onmousemove="showHint('{{ hint }}')"#}
+                    {#                                   onmouseout="hideHint()" class="far fa-question-circle"></i>{% endif %}</label>#}
+                    {#                            </span>#}
+                    {#                            {% endif %}#}
+                    {##}
+                    {#                            {% if test.test_lesson_number != 8 %}#}
+                    {#                                <br>#}
+                    {#                            {% endif %}#}
+                    {#                        {% endfor %}#}
+                    {#                    </div>#}
+                {% else %}
+
+
+                    {% if test.test_lesson_number == 9 %}
+                        <div class="question__checkbox-list question-checkbox-list">
+                            {% for variant, hint in question.question_variants %}
+
+                                <div class="question__yes-no question-yes-no question-checkbox-list__item">
+                                    <div class="question-yes-no__img-wrap">
+                                        {#                                            <img class="question-yes-no__img" src="{% static 'img/delete-me-on-production-2.jpg' %}">#}
+                                        {{ variant|safe }}
+                                    </div>
+                                    <div class="question-yes-no__checkbox-list">
+                                        <label class="question-yes-no__checkbox checkbox"><span
+                                                class="checkbox__text">Да</span>
+                                            <input class="checkbox__input"
+                                                   id="{{ question.id }}-{{ forloop.counter }}-yes"
+                                                   name="{{ question.id }}" value="да"
+                                                   type="checkbox"><span
+                                                    class="checkbox__checkmark"></span>
+                                        </label>
+                                        <label class="question-yes-no__checkbox checkbox"><span
+                                                class="checkbox__text">Нет</span>
+                                            <input class="checkbox__input"
+                                                   id="{{ question.id }}-{{ forloop.counter }}-no"
+                                                   name="{{ question.id }}" value="нет"
+                                                   type="checkbox"><span
+                                                    class="checkbox__checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="question__checkbox-list question-checkbox-list question__exact-checkbox-list">
+                            {% for variant, hint in question.question_variants %}
+                                <label class="checkbox question-checkbox-list__item">
+                                    <span class="checkbox__text">{{ variant|safe }}</span>
+                                    <input class="checkbox__input" name="{{ question.id }}"
+                                           id="{{ question.id }}-{{ forloop.counter }}" value="{{ variant }}"
+                                           required="" type="checkbox">
+                                    <span class="checkbox__checkmark"></span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+
+
+
+
+                    <!-- Check choices -->
+{#                                        <div class="form-group form-group-checkboxes">#}
+{#                                            {% for variant in question.question_variants %}#}
+{#                                                <input type="checkbox" name="{{ question.id }}" id="{{ question.id }}" value="{{ variant }}"#}
+{#                                                       required>#}
+{#                                                <label for="{{ question.id }}"> {{ variant|safe }} </label> <br>#}
+{#                                            {% endfor %}#}
+{##}
+{#                                            {% if test.test_lesson_number == 9 %}#}
+{#                                                {% for variant, hint in question.question_variants %}#}
+{#                                                    {% if forloop.counter == 1 %}#}
+{#                                                        <span style="display: flex; flex-direction: column">#}
+{#                                                        <span>{{ variant|safe }}</span>#}
+{##}
+{#                                                        <span class='test_9_checkboxes'>#}
+{#                                                            <input type="checkbox" name="{{ question.id }}"#}
+{#                                                                   id="{{ question.id }}{{ forloop.counter }}-yes-first"#}
+{#                                                                   value="да">#}
+{#                                                            <label for="{{ question.id }}{{ forloop.counter }}-yes-first">Да</label>#}
+{#                                                            /#}
+{#                                                            <input type="checkbox" name="{{ question.id }}"#}
+{#                                                                   id="{{ question.id }}{{ forloop.counter }}-no-first" value="нет">#}
+{#                                                            <label for="{{ question.id }}{{ forloop.counter }}-no-first">Нет</label>#}
+{#                                                        </span>#}
+{#                                                    </span>#}
+{##}
+{#                                                    {% else %}#}
+{#                                                        <span style="display: flex; flex-direction: column">#}
+{#                                                        <span>{{ variant|safe }}</span>#}
+{##}
+{#                                                        <span class='test_9_checkboxes'>#}
+{#                                                        <input type="checkbox" name="{{ question.id }}"#}
+{#                                                               id="{{ question.id }}{{ forloop.counter }}-yes"#}
+{#                                                               value="да">#}
+{#                                                        <label for="{{ question.id }}{{ forloop.counter }}-yes">Да</label>#}
+{#                                                        /#}
+{#                                                        <input type="checkbox" name="{{ question.id }}"#}
+{#                                                               id="{{ question.id }}{{ forloop.counter }}-no"#}
+{#                                                               value="нет">#}
+{#                                                        <label for="{{ question.id }}{{ forloop.counter }}-no">Нет</label>#}
+{#                                                        </span>#}
+{#                                                    </span>#}
+{#                                                    {% endif %}#}
+{#                                                {% endfor %}#}
+{#                                            {% else %}#}
+{#                                                {% for variant, hint in question.question_variants %}#}
+{#                                                    <input type="checkbox" name="{{ question.id }}"#}
+{#                                                           id="{{ question.id }}{{ forloop.counter }}"#}
+{#                                                           value="{{ variant }}">#}
+{#                                                    <label for="{{ question.id }}{{ forloop.counter }}"> {{ variant|safe }} </label>#}
+{#                                                    <br>#}
+{#                                                {% endfor %}#}
+{#                                            {% endif %}#}
+{#                                        </div>#}
+                {% endif %}
+            </div>
+            {% if test.test_lesson_number == 12 %}
+                {% if forloop.counter == 2 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 11 or forloop.counter == 12 or forloop.counter == 13 or forloop.counter == 15 or forloop.counter == 23 or forloop.counter == 24 or forloop.counter == 25 or forloop.counter == 26 or forloop.counter == 27 or forloop.counter == 29 or forloop.counter == 30 or forloop.counter == 31 %}
+
+                {% else %}
+                    <hr>
+                    <br>
+                {% endif %}
+            {% else %}
+                {#                <hr>#}
+            {% endif %}
+
+        {% endfor %}
+    </div>
+
+    {% if test.test_lesson_number == 11 %}
+    <script src="https://unpkg.com/imask"></script>
+    <script>
+    document.querySelectorAll('textarea').forEach(textarea => {
+        let regExpMask = IMask(
+            textarea,
+          {
+            mask: /^[1-9]\d{0,6}$/
+          });
+    })
+    </script>
+    {% endif %}
+
+{% endblock %}

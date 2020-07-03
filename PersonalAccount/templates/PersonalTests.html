@@ -1,0 +1,45 @@
+{% extends "Home.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="crumbs-container container">
+        <div class="crumbs"><a class="crumbs__link" href="{% url 'home' %}">Главная<i
+                class="icon icon_circle crumbs__icon"></i></a><a class="crumbs__link_current" href="">Личный кабинет</a>
+        </div>
+    </div>
+    <div class="lk">
+        <div class="container">
+            <h1 class="title title_h1 text_left mb-1">Личный кабинет</h1>
+            <div class="lk-nav"><a class="lk-nav__item btn btn_1" href="{% url 'all_tests' %}">Мои тесты</a><a
+                    class="lk-nav__item btn" href="{% url 'personal_info' %}">Мои данные</a></div>
+            <div class="lk-test-list">
+                {% for test in tests %}
+                    <div class="lk-test">
+                        <div>
+                            <div class="lk-test__number">Тест <span>№</span> {{ test.test_lesson_number }}</div>
+                            <div class="lk-test__title">{{ test.test_title }}</div>
+                        </div>
+                        <div class="column lk-test__btn-column">
+                            {% if test.id in available_tests %}
+                                <a class="lk-test__btn btn btn_2 mt-05 mb-05"
+                                   href="{% url 'reset_test' test.test_lesson_number %}">Пройти</a>{% endif %}
+                            {% if test.id in passed_tests %}
+                                {#                            <a class="lk-test__btn btn btn_1 mt-05 mb-05" href="/results/{{ user.username }}/{{ test.id }}/all/">Результат</a>{% endif %}#}
+                                <a class="lk-test__btn btn btn_1 mt-05 mb-05"
+                                   href="{% url 'test_result' test.test_lesson_number %}">Результат</a>{% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if can_get_profs and passed_tests|length == 15%}
+                <a href="{% url 'get_final_result' %}" class="lk-match-profs-btn btn btn_1 mb-2">Подобрать профессии <i
+                        class="icon icon_arrow"></i></a>
+            {% endif %}
+
+            {% if profs and passed_tests|length == 15 %}
+                <a href="{% url 'final_result' %}" class="lk-match-profs-btn btn btn_1 mb-2">Мои профессии <i
+                        class="icon icon_arrow"></i></a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

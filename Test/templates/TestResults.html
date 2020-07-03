@@ -1,0 +1,79 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results</title>
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "CSS/styles.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "JS/Charts/chartist.min.css" %}">
+    <script type="text/javascript" src="{% static "JS/Charts/chartist.min.js" %}"></script>
+    <script src="{% static "JS/AnalyseScripts.js" %}"></script>
+</head>
+<body onload="find_result_creator({{ lesson_number }}, {{ result }})">
+<div id="redirect-url" style="position:absolute;opacity: 0">{% url 'test_result' test.test_lesson_number %}</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:absolute;opacity: 0">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav"> <!-- Контент меню -->
+            <li class="nav-item">
+                <a class="nav-link" href="/home/"> Главная страница </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact/"> Обратная связь </a>
+            </li>
+            {% if user.username %} <!-- Пользователь авторизирован -->
+                <div class="form-row auth_pare">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/"> Личный кабинет </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/personal_tests"> Мои тесты </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/logout/"> Выйти ({{ user.username }})<span class="sr-only">(current)</span></a>
+                    </li>
+                </div>
+            {% else %}
+                <div class="form-row auth_pare">
+                    <li>
+                        <a class="nav-link" href="/auth/login/"> Войти </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/auth/registration/"> Зарегистрироваться </a>
+                    </li>
+                </div>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h3 class="mt-4">Подождите, идет обработка результата</h3>
+    <div style="position:absolute;opacity: 0">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 result_page_title">
+                Результаты теста №{{ lesson_number }}
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div id="result_field" class="ct-chart ct-square"></div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+
+{#<script>#}
+{#    window.location.replace("{% url 'test_results_all' user.username test.id %}");#}
+{#</script>#}
+
+</body>
+</html>

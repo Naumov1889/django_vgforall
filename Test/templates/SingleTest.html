@@ -1,0 +1,678 @@
+{% extends "Home.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <script>
+        document.body.onload = function () {
+            start_page({{ test.test_timer }}, {{ finished }}, {{ test.test_lesson_number }});
+        };
+    </script>
+
+    <div id="HintBlock" class="MyTooltip"></div>
+
+    <div class="crumbs-container container">
+        <div class="crumbs"><a class="crumbs__link" href="{% url 'home' %}">Главная<i
+                class="icon icon_circle crumbs__icon"></i></a><a class="crumbs__link" href="{% url 'all_tests' %}">Личный
+            кабинет<i
+                    class="icon icon_circle crumbs__icon"></i></a><a class="crumbs__link_current"
+                                                                     href="">{{ test.test_title }}</a></div>
+    </div>
+
+
+    <div class="test">
+        {% if test.test_timer != 0 %}
+            <div id="Timer" class="test-timer">
+                <div class="test-timer__title">Осталось вермени</div>
+                <div class="test-timer__content">
+                    <div class="test-timer__minutes test-timer__number" id="siteTimerMinutes">00</div>
+                    <div class="test-timer__colon">:</div>
+                    <div class="test-timer__seconds test-timer__number" id="siteTimerSeconds">00</div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="container">
+
+
+            <h1 class="title title_h1">Тест {{ test.test_lesson_number }}. {{ test.test_title }}.
+                {% if test.test_author %}{{ test.test_author|safe }}{% endif %}</h1>
+
+            {% if test.test_lesson_number in tests_with_imgs or test.test_lesson_number == 12 or test.test_timer != 0 %}
+
+                <div style="overflow: hidden;" class="popbox popbox-test-description" data-popbox-id="popbox-test-description">
+                    <div style="overflow-y: auto;" class="popbox_container">
+                        <div class="container">
+                            <h1 class="title title_h2 mt-1 mb-1">
+                                Тест {{ test.test_lesson_number }}. {{ test.test_title }}.<br>
+                            {% if test.test_author %}{{ test.test_author }}{% endif %}</h1>
+
+                            {{ test.test_description|safe }}
+
+                            {% if test.test_timer != 0 %}
+                                <p>Внимание! Тест на время. Как только вы нажмете на кнопку «Преступить к
+                                    решению теста», автоматически запустится таймер.</p>
+                            {% endif %}
+                            <div class="btn btn_2 mb-1" data-popbox-close="popbox-test-description">Приступить к решению
+                                теста
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <h3 class="title title_h3 text_left mt-05 mb-025">Задание:</h3>
+                <p>{{ test.test_description|safe }}</p>
+            {% endif %}
+
+            {% if test.test_lesson_number != 14 %}
+            <h3 class="title title_h3 text_left mt-1 mb-025">Вопросы:</h3>
+            {% endif %}
+            <form id="data_form" role="form" method="post" action="">
+                {% csrf_token %}
+                {% block QUESTIONS_WITH_ANSWER %}
+
+                {% endblock %}
+
+                {% block QUESTIONS_WITH_VARIANTS %}
+                {% endblock %}
+
+                <button style="margin-top: 44px; margin-bottom: 44px" class="btn btn_2 beauty_button" type="submit" id="FinishButton" target="_blank"
+                        rel="nofollow noopener">Завершить тест
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="popbox popbox-no-bottom-btn popbox-test-hint" data-popbox-id="popbox-test-hint">
+        <div class="popbox_container">
+            <p class="popbox-test-hint__text" data-js="popbox-test-hint"></p>
+        </div>
+    </div>
+
+
+    <style>
+        .popbox-test-hint .popbox_container {
+            padding: 8px 12px 13px 12px !important;
+        }
+        .popbox-test-hint__text {
+            font-size: 16px;
+        }
+        .test .btn {
+            max-width: 100%;
+        }
+        .test form .btn_2:hover {
+            -webkit-border-radius: 26px;
+            border-radius: 26px;
+            border: 1px solid #be1622;
+            color: #be1622;
+            background-color: #ffffff;
+            background-image: unset;
+            box-shadow: unset;
+            cursor: default;
+        }
+
+        .test form .btn_2.active {
+            -webkit-box-shadow: 0 15px 27px rgba(190, 22, 34, 0.15);
+            box-shadow: 0 15px 27px rgba(190, 22, 34, 0.15);
+            background-color: #1b202b;
+            background-image: -webkit-linear-gradient(39deg, #be1622 0%, #d62f3b 100%);
+            background-image: -o-linear-gradient(39deg, #be1622 0%, #d62f3b 100%);
+            background-image: linear-gradient(51deg, #be1622 0%, #d62f3b 100%);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .test .btn {
+                font-size: 20px
+            }
+        }
+        @media (max-width: 340px) {
+            .test .btn {
+                font-size: 18px
+            }
+        }
+
+
+        {% if test.test_lesson_number == 13 %}
+            .test form .btn_2:hover,
+            .test form .btn_2 {
+                -webkit-box-shadow: 0 15px 27px rgba(190, 22, 34, 0.15);
+                box-shadow: 0 15px 27px rgba(190, 22, 34, 0.15);
+                background-color: #1b202b;
+                background-image: -webkit-linear-gradient(39deg, #be1622 0%, #d62f3b 100%);
+                background-image: -o-linear-gradient(39deg, #be1622 0%, #d62f3b 100%);
+                background-image: linear-gradient(51deg, #be1622 0%, #d62f3b 100%);
+                color: #fff;
+                cursor: pointer;
+            }
+        {% endif %}
+
+        {% if test.test_lesson_number == 8 or test.test_lesson_number == 10 %}
+            .test .checkbox__text {
+                display: flex;
+                align-items: center;
+            }
+
+            .test .question__checkbox-list {
+                align-items: center;
+            }
+        {% endif %}
+
+        {% if test.test_lesson_number in tests_with_imgs %}
+
+            .test .question-list .question {
+                margin-bottom: 66px;
+            }
+
+            .test .checkbox__checkmark {
+                top: Calc(50% + 1px);
+                transform: translateY(-50%);
+            }
+
+            .test .question__question > img {
+                margin: 0 auto;
+                display: block;
+                max-width: 100%;
+                max-height: 230px;
+                width: 100%;
+                object-fit: contain;
+            }
+
+            .test .checkbox img,
+            .test .question-yes-no__img-wrap img {
+                max-height: 160px;
+                max-width: 140px;
+            }
+            .test .question__question {
+                position: relative;
+                width: 360px;
+                max-width: 100%;
+            }
+            .test .question__question span {
+                width: 100%;
+            }
+
+            .test .question__question {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        {% endif %}
+
+
+        {% if test.test_lesson_number == 8 %}
+            .form-row > label > img {
+                max-height: 200px;
+            }
+            .form-group {
+                margin-top: 20px;
+                margin-bottom: 0;
+            }
+            hr {
+                margin-top: Calc(1rem + 20px);
+            }
+
+
+            @media (max-width: 600px) {
+                .test .checkbox img {
+                    max-width: 110px;
+                }
+            }
+
+            @media (max-width: 430px) {
+                .test .question-checkbox-list__item {
+                    transform: scale(0.8);
+                    transform-origin: left bottom;
+                }
+                .test .checkbox__text {
+                    font-size: 21px;
+                }
+                .question-checkbox-list__item {
+                    margin: 4px 0 0 0;
+                }
+            }
+            @media (max-width: 350px) {
+                .test .question-checkbox-list__item {
+                    transform: scale(0.7);
+                    width: 53%;
+                }
+                .question-checkbox-list__item {
+                    margin: -22px -18px 0 0;
+                }
+            }
+
+            @media (max-width: 400px) {
+                .test .question__question {
+                    min-width: 360px;
+                    transform: scale(0.9);
+                    transform-origin: 0;
+                    font-size: 26px;
+                }
+                .test .question__question span {
+                    font-size: 22px;
+                }
+            }
+            @media (max-width: 350px) {
+                .test .question__question {
+                    transform: scale(0.82);
+                }
+            }
+        {% endif %}
+
+        {% if test.test_lesson_number == 9 %}
+            .test .question__checkbox-list {
+                align-items: flex-end;
+            }
+
+            @media (max-width: 600px) {
+                .test .question-yes-no__img-wrap img {
+                    max-width: 110px;
+                }
+            }
+
+            @media (max-width: 430px) {
+                .test .question__yes-no {
+                    transform: scale(0.8);
+                    transform-origin: left bottom;
+                }
+                .test .question-yes-no__img-wrap {
+                    font-size: 21px;
+                }
+                .question-checkbox-list__item {
+                    margin: 4px 0 0 0;
+                }
+            }
+            @media (max-width: 350px) {
+                .test .question__yes-no {
+                    transform: scale(0.7);
+                }
+                .question-checkbox-list__item {
+                    margin: -36px -12px 0 0;
+                }
+            }
+
+            @media (max-width: 400px) {
+                .test .question__question {
+                    min-width: 360px;
+                    transform: scale(0.9);
+                    transform-origin: 0;
+                    font-size: 26px;
+                }
+                .test .question__question span {
+                    font-size: 22px;
+                }
+            }
+            @media (max-width: 350px) {
+                .test .question__question {
+                    transform: scale(0.82);
+                }
+            }
+        {% endif %}
+
+        {% if test.test_lesson_number == 10 %}
+            .form-row {
+                align-items: flex-start;
+            }
+            .form-row img {
+                margin-top: 6px;
+                margin-bottom: 16px;
+            }
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+        {% endif %}
+
+        {% if test.test_lesson_number == 11 %}
+            .test textarea {
+                max-width: 300px;
+                height: 75px;
+            }
+        {% endif %}
+
+        .question .question__exact-checkbox-list .checkbox__checkmark {
+            border-radius: 5px;
+        }
+
+        {% if test.test_lesson_number == 12 or test.test_lesson_number == 10 or test.test_lesson_number == 15 %}
+            .question__checkbox-list {
+                align-items: flex-start !important;
+                flex-direction: column;
+            }
+        {% endif %}
+    
+         @media (max-width: 900px) {
+             #HintBlock {
+                 display: none;
+             }
+         }
+
+
+        {% if test.test_lesson_number == 5 or test.test_lesson_number == 6 or test.test_lesson_number == 7 or test.test_lesson_number == 11 %}
+            @media (max-width: 900px) {
+                .question-checkbox-list {
+                    flex-direction: column;
+                }
+            }
+        {% endif %}
+        {% if test.test_lesson_number == 8 %}
+            @media (max-width: 550px) {
+                .test .question:nth-child(35) .question-checkbox-list__item {
+                    width: 39%;
+                    transform: scale(0.9);
+                    transform-origin: left bottom;
+                }
+            }
+            @media (max-width: 470px) {
+                .test .question:nth-child(35) .question-checkbox-list__item {
+                    width: 40%;
+                    transform: scale(0.85);
+                    transform-origin: left bottom;
+                }
+            }
+            @media (max-width: 430px) {
+                .test .question:nth-child(35) .question-checkbox-list__item {
+                    width: 49%;
+                    transform: scale(0.8);
+                    transform-origin: left bottom;
+                }
+            }
+            @media (max-width: 390px) {
+                .test .question:nth-child(35) .question-checkbox-list__item {
+                    width: 50%;
+                    transform: scale(0.75);
+                    transform-origin: left bottom;
+                }
+            }
+            @media (max-width: 350px) {
+                .test .question:nth-child(35) .question-checkbox-list__item {
+                    width: 52%;
+                    transform: scale(0.75);
+                    transform-origin: left bottom;
+                }
+                .test .question:nth-child(35) .question-checkbox-list__item:nth-child(2),
+                .test .question:nth-child(35) .question-checkbox-list__item:nth-child(4) {
+                    transform-origin: center bottom;
+                }
+            }
+        {% endif %}
+    </style>
+
+    <script src='{% static "JS/jquery-2.1.4.min.js" %}'></script>
+    <script>
+        //checking if all radio buttons are checked
+        $("form input:radio").change(function () {
+
+            //console.log('radio change ');
+            var names = {};
+            $('form input:radio').each(function () {
+                names[$(this).attr('name')] = true;
+            });
+
+            //console.dir(names);
+            var count = 0;
+            $.each(names, function () {
+                count++;
+            });
+            //console.log('count' + count);
+            //console.log('checked length' + $(':radio:checked').length );
+
+            //all checked
+            if ($('form input:radio:checked').length === count) {
+                document.querySelector(".beauty_button").classList.add('active')
+            } else {
+                document.querySelector(".beauty_button").classList.remove('active')
+            }
+        });
+
+        {% if test.test_lesson_number == 1 %}
+            document.querySelector('.test form textarea').addEventListener('input', e => {
+                if (e.target.value != 0) {
+                    document.querySelector(".beauty_button").classList.add('active');
+                } else {
+                    document.querySelector(".beauty_button").classList.remove('active')
+                }
+            });
+        {% endif %}
+
+        {% if test.test_lesson_number == 9 %}
+            document.querySelectorAll('.test form input[type=checkbox]').forEach(checkbox => {
+                checkbox.addEventListener('click', e => {
+                    if (!(checkbox.checked)) {
+                        checkbox.checked = true
+                    } else {
+                        checkbox.closest('.question-yes-no__checkbox-list').querySelectorAll('input[type=checkbox]').forEach(checkbox_2 => {
+                            if (checkbox != checkbox_2) {
+                                checkbox_2.checked = false;
+                            }
+                        });
+                    }
+                })
+            });
+
+            document.querySelectorAll('form input').forEach(checkbox => {
+                checkbox.addEventListener('change', e => {
+                    let allChecked = true;
+                    let unsolvedNumbers = [];
+                    let counter = 1;
+                    document.querySelectorAll('form .question-yes-no__checkbox-list').forEach(test_9_checkbox => {
+                        let oneChecked = false;
+                        test_9_checkbox.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+                            if (checkbox.checked) {
+                                oneChecked = true;
+                            }
+                        });
+
+                        if (!(oneChecked)) {
+                            allChecked = false;
+                            unsolvedNumbers.push(counter);
+                        }
+                        counter += 1;
+                    });
+
+                    if (allChecked) {
+                        document.querySelector(".beauty_button").classList.add('active')
+                    } else {
+                        document.querySelector(".beauty_button").classList.remove('active')
+                    }
+                })
+            });
+            document.querySelector("form .beauty_button").addEventListener('click', e => {
+                e.preventDefault();
+
+                let allChecked = true;
+                let unsolvedNumbers = [];
+                let counter = 1;
+                document.querySelectorAll('form .question-yes-no__checkbox-list').forEach(test_9_checkbox => {
+                    let oneChecked = false;
+                    test_9_checkbox.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+                        if (checkbox.checked) {
+                            oneChecked = true;
+                        }
+                    });
+
+                    if (!(oneChecked)) {
+                        allChecked = false;
+                        unsolvedNumbers.push(counter);
+                    }
+                    counter += 1;
+                });
+
+                if (allChecked) {
+                    document.querySelector('form').submit();
+                } else {
+                    alert('Нерешенные варианты: ' + String(unsolvedNumbers))
+                }
+            });
+        {% endif %}
+
+        {% if test.test_lesson_number in tests_with_imgs or test.test_lesson_number == 12 or test.test_timer != 0 %}
+            new Popbox().open('popbox-test-description');
+        {% endif %}
+
+        {% if test.test_lesson_number == 11 %}
+            let allFilled = false;
+            let allChecked = false;
+
+            document.querySelectorAll('.test form textarea').forEach(input => {
+                input.addEventListener('input', e => {
+                    allFilled = true;
+                    document.querySelectorAll('.test form textarea').forEach(input_2 => {
+                        if (input_2.value == 0) {
+                            allFilled = false;
+                        }
+                    });
+
+                    console.log(allFilled, allChecked);
+                    if (allFilled && allChecked) {
+                        document.querySelector(".beauty_button").classList.add('active')
+                    } else {
+                        document.querySelector(".beauty_button").classList.remove('active')
+                    }
+                })
+            });
+
+            $(".test form input:radio").change(function () {
+                console.log(allFilled, allChecked);
+                document.querySelector(".beauty_button").classList.remove('active');
+
+                //console.log('radio change ');
+                var names = {};
+                $('.test form input:radio').each(function () {
+                    names[$(this).attr('name')] = true;
+                });
+
+                //console.dir(names);
+                var count = 0;
+                $.each(names, function () {
+                    count++;
+                });
+                //console.log('count' + count);
+                //console.log('checked length' + $(':radio:checked').length );
+
+                //all checked
+                if ($('.test form input:radio:checked').length === count) {
+                    allChecked = true;
+                } else {
+                    allChecked = false;
+                }
+
+                if (allFilled && allChecked) {
+                    document.querySelector(".beauty_button").classList.add('active')
+                } else {
+                    document.querySelector(".beauty_button").classList.remove('active')
+                }
+            });
+        {% endif %}
+
+        {% if test.test_lesson_number == 12 %}
+            // forbid more than 2 selected checkboxes
+            $('.test form input[type=checkbox]').on('change', function (evt) {
+                if ($(this).parents('.question__exact-checkbox-list').find('input[type=checkbox]:checked').length >= 3) {
+                    this.checked = false;
+                }
+            });
+
+            document.querySelector('.test form input').addEventListener('input', e => {
+                let allChecked = true;
+                let allRadioSelected = true;
+                let unsolvedNumbers = [];
+                let unsolvedNumbersRadio = [];
+                let counter = 1;
+                document.querySelectorAll('.test form .question__checkbox-list').forEach(checkboxes => {
+                    if (checkboxes.classList.contains('question__exact-checkbox-list')) {
+                        let oneChecked = false;
+                        let countChecked = 0;
+                        checkboxes.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+                            if (checkbox.checked) {
+                                oneChecked = true;
+                                countChecked += 1
+                            }
+                        });
+
+                        if ((!(oneChecked)) || countChecked != 2) {
+                            allChecked = false;
+                            unsolvedNumbers.push(counter);
+                        }
+                    } else {
+                        let radioSelected = false;
+                        checkboxes.querySelectorAll('input[type=radio]').forEach(radio => {
+                            if (radio.checked) {
+                                radioSelected = true;
+                            }
+                        });
+
+                        if (!(radioSelected)) {
+                            allRadioSelected = false;
+                            unsolvedNumbersRadio.push(counter);
+                        }
+                    }
+
+                    counter += 1;
+                });
+
+                if (allChecked && allRadioSelected) {
+                    document.querySelector(".beauty_button").classList.add('active');
+                } else {
+                    document.querySelector(".beauty_button").classList.remove('active');
+                }
+            });
+
+            document.querySelector(".test form .beauty_button").addEventListener('click', e => {
+                e.preventDefault();
+
+                let allChecked = true;
+                let allRadioSelected = true;
+                let unsolvedNumbers = [];
+                let unsolvedNumbersRadio = [];
+                let counter = 1;
+                document.querySelectorAll('.test form .question__checkbox-list').forEach(checkboxes => {
+                    if (checkboxes.classList.contains('question__exact-checkbox-list')) {
+                        let oneChecked = false;
+                        let countChecked = 0;
+                        checkboxes.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+                            if (checkbox.checked) {
+                                oneChecked = true;
+                                countChecked += 1
+                            }
+                        });
+
+                        if ((!(oneChecked)) || countChecked != 2) {
+                            allChecked = false;
+                            unsolvedNumbers.push(counter);
+                        }
+                    } else {
+                        let radioSelected = false;
+                        checkboxes.querySelectorAll('input[type=radio]').forEach(radio => {
+                            if (radio.checked) {
+                                radioSelected = true;
+                            }
+                        });
+
+                        if (!(radioSelected)) {
+                            allRadioSelected = false;
+                            unsolvedNumbersRadio.push(counter);
+                        }
+                    }
+
+                    counter += 1;
+                });
+
+                if (allChecked && allRadioSelected) {
+                    document.querySelector('.test form').submit();
+                } else if (allChecked && !allRadioSelected) {
+                    alert('Нерешенные вопросы с одним обязательным вариантом: ' + String(unsolvedNumbersRadio))
+                } else if (!allChecked && allRadioSelected) {
+                    alert('Нерешенные вопросы с двумя обязательными вариантами: ' + String(unsolvedNumbers))
+                } else if (!allChecked && !allRadioSelected) {
+                    alert('Нерешенные вопросы с одним обязательным вариантом: ' + String(unsolvedNumbersRadio) + '\n'
+                        + 'Нерешенные вопросы с двумя обязательными вариантами: ' + String(unsolvedNumbers))
+                }
+            });
+        {% endif %}
+
+
+    </script>
+
+{% endblock %}

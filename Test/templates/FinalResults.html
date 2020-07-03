@@ -1,0 +1,141 @@
+{% extends "Home.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="crumbs-container container">
+        <div class="crumbs">
+            <a class="crumbs__link" href="{% url 'home' %}">Главная<i class="icon icon_circle crumbs__icon"></i></a>
+            <a class="crumbs__link" href="{% url 'all_tests' %}">Личный кабинет<i
+                    class="icon icon_circle crumbs__icon"></i></a>
+            <a class="crumbs__link_current" href="">Личный кабинет</a>
+        </div>
+    </div>
+    <div class="final-result">
+        <div class="container">
+            <h1 class="title title_h1 text_left">Итоговый результат</h1>
+            {% if can_get_profs %}
+                <a class="final-result__match-profs mt-025" style="display:block;width:max-content" href="{% url 'get_final_result' %}">Подобрать професии</a>
+            {% endif %}
+
+            <div class="final-result__accordion-list mb-15" style="margin-top: 1.5rem">
+                {% for prof in profs %}
+                    {% if forloop.counter == 1 %}
+                        {{ prof.final_result_description|safe }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="final-result__accordion-list-of-lists mb-2">
+                {% for prof in profs %}
+                    {% if forloop.counter != 1 %}
+                        <div class="accordion accordion_type-2">
+                            <div class="accordion__title">Итоговый результат от {{ prof.whenWasCalculated }}</div>
+                            <div class="accordion__content">
+
+                                <div class="final-result__accordion-list">
+
+
+                                    {{ prof.final_result_description|safe }}
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .final-result__no-profs-text {
+            margin-bottom: 1rem;
+            font-size: 21px;
+        }
+        .accordion .final-result__no-profs-text {
+            margin-bottom: 0;
+        }
+
+        .accordion_type-2 {
+            box-shadow: none;
+            border: 1px solid grey;
+            border-bottom: 0;
+            border-radius: 0;
+        }
+
+        .accordion_type-2:last-child {
+            border-bottom: 1px solid grey;
+        }
+
+        .accordion_type-2 .accordion__title {
+            border: none;
+            box-shadow: none;
+            border-radius: 0;
+            background-color: transparent;
+        }
+
+
+        .accordion_type-2 .accordion__content {
+            background-color: transparent;
+            transition: 0ms;
+        }
+
+        .accordion_type-2.accordion_active .accordion .accordion__content {
+            padding: 0;
+        }
+
+        .accordion_type-2.accordion_active .accordion.accordion_active .accordion__content {
+            padding: 0 24px 24px 24px;
+        }
+
+        .accordion_type-2.accordion_active .accordion .accordion__title .accordion__icon {
+            transform: translateY(-50%);
+            transition: 0ms;
+        }
+
+        .accordion_type-2.accordion_active .accordion.accordion_active .accordion__title .accordion__icon {
+            transform: rotate(180deg) translateY(12px);
+        }
+
+
+        @media (max-width: 600px) {
+            .final-result__accordion-list-of-lists {
+                margin: 0 -5px 0 -5px;
+            }
+
+            .final-result__accordion-list-of-lists .accordion_type-2.accordion_active > .accordion__content {
+                padding: 0 7px 18px 7px;
+            }
+
+            .accordion_type-2.accordion_active .accordion .accordion__title {
+                padding: 18px 60px 18px 14px;
+            }
+
+            .accordion_type-2.accordion_active .accordion.accordion_active .accordion__content {
+                padding: 0 14px 18px 14px;
+            }
+        }
+    </style>
+
+    <script>
+        let final_content_containers = document.querySelectorAll('.final-result__accordion-list');
+
+        final_content_containers.forEach(final_content_container => {
+            let final_content = '<div class="final-result__accordion-column">';
+            let accordions = final_content_container.querySelectorAll('.final-result__accordion-list .accordion');
+            console.log(accordions)
+            if (accordions.length != 0) {
+                accordions.forEach(function (accordion, counter) {
+                    if (Math.round(accordions.length / 2) == counter) {
+                        final_content += '</div>';
+                        final_content += '<div class="final-result__accordion-column">';
+                    }
+                    final_content += accordion.outerHTML;
+                });
+
+                final_content_container.innerHTML = final_content;
+            }
+
+        });
+    </script>
+{% endblock %}
+
